@@ -12,6 +12,8 @@
     <context:component-scan base-package="streetChase.repository"/>
     <context:component-scan base-package="streetChase.service"/>
     <context:component-scan base-package="streetChase.controller"/>
+    <context:component-scan base-package="streetChase"/>
+
 
     <!-- SpringMVC -->
     <import resource="spring-mvc.xml"/>

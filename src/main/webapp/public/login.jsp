@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div class="row-fluid">
     <div class="jumbotron">
-        <h1><spring:message code='project.name'/></h1>
+        <img src="<c:url value="/resources/img/streetchase.png" />" alt=""  height="350" width="400"/>
     </div>
 </div>
 <div class="row-fluid">
@@ -14,8 +14,8 @@
         </div>
         <form method="post" action="j_spring_security_check">
             <div>
-                <input name="j_username" id="j_username" type="text" class="span12" placeholder="<spring:message code='sample.email' /> "><br/>
-                <input name="j_password" id="j_password" type="password"  class="span12" placeholder="Password"><br/>
+                <input name="j_username" id="j_username" type="text" class="span12" placeholder="Login "><br/>
+                <input name="j_password" id="j_password" type="password"  class="span12" placeholder="Haslo"><br/>
                 <button type="submit" name="submit" class="btn btn-inverse btn-block"><spring:message code="login.signIn" /></button>
             </div>
         </form>

@@ -4,7 +4,7 @@
 
 <div class="masthead">
     <h3 class="muted">
-        <spring:message code='header.message'/>
+        <spring:message code='header.message'/> <img src="<c:url value="/resources/img/streetchase.png" />" alt="" height="150" width="200"/>
     </h3>
 
     <div class="navbar">

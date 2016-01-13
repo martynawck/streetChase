@@ -22,5 +22,6 @@
             timeBetweenEvictionRunsMillis="30000"
             minEvictableIdleTimeMillis="60000"
             url="jdbc:postgresql://localhost:5432/gis" />
+        <resources mapping="/resources/**" location="/resources/" />
 
 </Context>
