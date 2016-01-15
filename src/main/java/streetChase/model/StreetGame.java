@@ -25,6 +25,16 @@ public class StreetGame {
     private boolean is_private;
     private Timestamp start_time;
     private Timestamp end_time;
+
+    public String getStart_point_description() {
+        return start_point_description;
+    }
+
+    public void setStart_point_description(String start_point_description) {
+        this.start_point_description = start_point_description;
+    }
+
+    private String start_point_description;
     @Column(name = "creator_id")
     private int creator;
 

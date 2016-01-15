@@ -1,4 +1,4 @@
-package streetChase.service;
+package streetChase.service.mobile;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Martyna on 2016-01-12.
  */
-public interface SubService {
+public interface MobileSubscriptionService {
 
     public List findByUser(int id);
     public List findByGame(int id);

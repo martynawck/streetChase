@@ -1,4 +1,4 @@
-package streetChase.service;
+package streetChase.service.mobile;
 
 import streetChase.model.StreetGame;
 import streetChase.model.User;

@@ -4,7 +4,7 @@
 
 -- Dumped from database version 9.4.1
 -- Dumped by pg_dump version 9.4.1
--- Started on 2015-12-13 14:58:49
+-- Started on 2016-01-15 00:09:12
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -14,7 +14,7 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- TOC entry 3404 (class 1262 OID 42372)
+-- TOC entry 3570 (class 1262 OID 42372)
 -- Name: gis; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -33,7 +33,7 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- TOC entry 198 (class 3079 OID 11855)
+-- TOC entry 197 (class 3079 OID 11855)
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -41,8 +41,8 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 3407 (class 0 OID 0)
--- Dependencies: 198
+-- TOC entry 3573 (class 0 OID 0)
+-- Dependencies: 197
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -50,7 +50,7 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
--- TOC entry 199 (class 3079 OID 42373)
+-- TOC entry 198 (class 3079 OID 42373)
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -58,8 +58,8 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 
 --
--- TOC entry 3408 (class 0 OID 0)
--- Dependencies: 199
+-- TOC entry 3574 (class 0 OID 0)
+-- Dependencies: 198
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
 --
 
@@ -105,20 +105,7 @@ CREATE SEQUENCE hibernate_sequence
 ALTER TABLE hibernate_sequence OWNER TO postgres;
 
 --
--- TOC entry 190 (class 1259 OID 49164)
--- Name: prueba; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE prueba (
-    p_id integer,
-    way geometry
-);
-
-
-ALTER TABLE prueba OWNER TO postgres;
-
---
--- TOC entry 191 (class 1259 OID 57356)
+-- TOC entry 190 (class 1259 OID 57356)
 -- Name: street_game; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -126,17 +113,18 @@ CREATE TABLE street_game (
     id integer NOT NULL,
     name character varying(255),
     description character varying(255),
-    private boolean,
-    start_time time with time zone,
-    end_time time with time zone,
-    starting_point geometry
+    is_private boolean,
+    start_time timestamp with time zone,
+    end_time timestamp with time zone,
+    creator_id integer,
+    start_point_description character varying(255)
 );
 
 
 ALTER TABLE street_game OWNER TO postgres;
 
 --
--- TOC entry 193 (class 1259 OID 57362)
+-- TOC entry 192 (class 1259 OID 57362)
 -- Name: street_game_control_point; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -144,15 +132,17 @@ CREATE TABLE street_game_control_point (
     id integer NOT NULL,
     street_game_id integer,
     name character varying(255),
-    location geometry
+    location geometry,
+    starting_point boolean,
+    next_point_id integer
 );
 
 
 ALTER TABLE street_game_control_point OWNER TO postgres;
 
 --
--- TOC entry 3409 (class 0 OID 0)
--- Dependencies: 193
+-- TOC entry 3575 (class 0 OID 0)
+-- Dependencies: 192
 -- Name: COLUMN street_game_control_point.street_game_id; Type: COMMENT; Schema: public; Owner: postgres
 --
 
@@ -161,7 +151,7 @@ COMMENT ON COLUMN street_game_control_point.street_game_id IS '
 
 
 --
--- TOC entry 194 (class 1259 OID 57365)
+-- TOC entry 193 (class 1259 OID 57365)
 -- Name: street_game_question; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -176,37 +166,22 @@ CREATE TABLE street_game_question (
 ALTER TABLE street_game_question OWNER TO postgres;
 
 --
--- TOC entry 197 (class 1259 OID 57377)
+-- TOC entry 196 (class 1259 OID 57377)
 -- Name: street_game_subscription; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE street_game_subscription (
-    id integer NOT NULL,
-    street_game_id integer,
-    user_id integer
+    street_game_id integer NOT NULL,
+    user_id integer NOT NULL,
+    id integer NOT NULL
 );
 
 
 ALTER TABLE street_game_subscription OWNER TO postgres;
 
---
--- TOC entry 196 (class 1259 OID 57374)
--- Name: street_game_user_question_status; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
---
-
-CREATE TABLE street_game_user_question_status (
-    id integer NOT NULL,
-    question_id integer,
-    user_id integer,
-    status character varying(20),
-    "timestamp" timestamp with time zone
-);
-
-
-ALTER TABLE street_game_user_question_status OWNER TO postgres;
 
 --
--- TOC entry 195 (class 1259 OID 57371)
+-- TOC entry 194 (class 1259 OID 57371)
 -- Name: street_game_user_reached_point; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -238,49 +213,44 @@ CREATE TABLE system_user (
 ALTER TABLE system_user OWNER TO postgres;
 
 --
--- TOC entry 192 (class 1259 OID 57359)
+-- TOC entry 191 (class 1259 OID 57359)
 -- Name: user_location; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE user_location (
     id integer NOT NULL,
     location geometry,
-    "time" timestamp with time zone,
-    street_game_id integer
+    street_game_id integer,
+    "timestamp" timestamp with time zone,
+    user_id integer
 );
 
 
 ALTER TABLE user_location OWNER TO postgres;
 
 --
--- TOC entry 3389 (class 0 OID 43753)
+-- TOC entry 3556 (class 0 OID 43753)
 -- Dependencies: 187
 -- Data for Name: contact; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO contact (id, email, name, phonenumber, lastname, streetgame_id) VALUES (1, 'admin', 'admin', '12345', NULL, NULL);
 INSERT INTO contact (id, email, name, phonenumber, lastname, streetgame_id) VALUES (2, 'user', 'user', '22222', NULL, NULL);
+INSERT INTO contact (id, email, name, phonenumber, lastname, streetgame_id) VALUES (1, 'admin', 'admin', '123454656', NULL, NULL);
+INSERT INTO contact (id, email, name, phonenumber, lastname, streetgame_id) VALUES (3, 'qweqwe@gmail.com', 'asdkada', '11111111', NULL, NULL);
+INSERT INTO contact (id, email, name, phonenumber, lastname, streetgame_id) VALUES (4, 'fsdfdfsdf', 'fsdfdfsdf', '123123123123', NULL, NULL);
 
 
 --
--- TOC entry 3410 (class 0 OID 0)
+-- TOC entry 3576 (class 0 OID 0)
 -- Dependencies: 189
 -- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('hibernate_sequence', 1, false);
+SELECT pg_catalog.setval('hibernate_sequence', 23, true);
 
 
 --
--- TOC entry 3392 (class 0 OID 49164)
--- Dependencies: 190
--- Data for Name: prueba; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
-
---
--- TOC entry 3243 (class 0 OID 42662)
+-- TOC entry 3238 (class 0 OID 42662)
 -- Dependencies: 173
 -- Data for Name: spatial_ref_sys; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1386,73 +1356,82 @@ INSERT INTO spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) VALU
 
 
 --
--- TOC entry 3393 (class 0 OID 57356)
--- Dependencies: 191
+-- TOC entry 3559 (class 0 OID 57356)
+-- Dependencies: 190
 -- Data for Name: street_game; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO street_game (id, name, description, is_private, start_time, end_time, creator_id, start_point_description) VALUES (1, 'Gra 1', 'Taka super gra', false, '2016-01-14 14:36:38+01', '2016-01-14 16:36:38+01', 2, 'Kolumna zygmunta');
+INSERT INTO street_game (id, name, description, is_private, start_time, end_time, creator_id, start_point_description) VALUES (2, 'Gra 2', 'Taka super gra 2', false, '2011-05-11 15:36:38+02', '2011-05-11 15:36:38+02', 3, 'Stadion Narodowy');
 
 
 --
--- TOC entry 3395 (class 0 OID 57362)
--- Dependencies: 193
+-- TOC entry 3561 (class 0 OID 57362)
+-- Dependencies: 192
 -- Data for Name: street_game_control_point; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO street_game_control_point (id, street_game_id, name, location, starting_point, next_point_id) VALUES (1, 2, '"Punkt 1"', NULL, true, 2);
+INSERT INTO street_game_control_point (id, street_game_id, name, location, starting_point, next_point_id) VALUES (2, 2, '"Punkt 2"', NULL, false, 3);
+INSERT INTO street_game_control_point (id, street_game_id, name, location, starting_point, next_point_id) VALUES (3, 2, '"Punkt 3"', NULL, false, 4);
+INSERT INTO street_game_control_point (id, street_game_id, name, location, starting_point, next_point_id) VALUES (4, 2, '"Punkt 4"', NULL, false, NULL);
 
 
 --
--- TOC entry 3396 (class 0 OID 57365)
--- Dependencies: 194
+-- TOC entry 3562 (class 0 OID 57365)
+-- Dependencies: 193
 -- Data for Name: street_game_question; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO street_game_question (id, question, answer, control_point_id) VALUES (2, 'a2', 'b', 2);
+INSERT INTO street_game_question (id, question, answer, control_point_id) VALUES (1, 'a1', 'b', 1);
+INSERT INTO street_game_question (id, question, answer, control_point_id) VALUES (3, 'a3', 'b', 3);
+INSERT INTO street_game_question (id, question, answer, control_point_id) VALUES (4, 'a4', 'b', 4);
 
 
 --
--- TOC entry 3399 (class 0 OID 57377)
--- Dependencies: 197
+-- TOC entry 3565 (class 0 OID 57377)
+-- Dependencies: 196
 -- Data for Name: street_game_subscription; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO street_game_subscription (street_game_id, user_id, id) VALUES (1, 4, 8);
+INSERT INTO street_game_subscription (street_game_id, user_id, id) VALUES (1, 3, 23);
 
-
---
--- TOC entry 3398 (class 0 OID 57374)
--- Dependencies: 196
--- Data for Name: street_game_user_question_status; Type: TABLE DATA; Schema: public; Owner: postgres
---
 
 
 
 --
--- TOC entry 3397 (class 0 OID 57371)
--- Dependencies: 195
+-- TOC entry 3563 (class 0 OID 57371)
+-- Dependencies: 194
 -- Data for Name: street_game_user_reached_point; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- TOC entry 3390 (class 0 OID 43756)
+-- TOC entry 3557 (class 0 OID 43756)
 -- Dependencies: 188
 -- Data for Name: system_user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO system_user (id, email, enabled, name, password, user_role) VALUES (1, 'admin', 'true', 'admin', 'admin12345', 'ROLE_ADMIN');
-INSERT INTO system_user (id, email, enabled, name, password, user_role) VALUES (2, 'user', 'true', 'user', 'user', 'ROLE_USER');
+INSERT INTO system_user (id, email, enabled, name, password, user_role) VALUES (1, 'admin', 'true', 'KAsia', 'admin12345', 'ROLE_ADMIN');
+INSERT INTO system_user (id, email, enabled, name, password, user_role) VALUES (2, 'user', 'true', 'Elka', 'user', 'ROLE_USER');
+INSERT INTO system_user (id, email, enabled, name, password, user_role) VALUES (3, 'user2', 'true', 'Monika', 'user2', 'ROLE_USER');
+INSERT INTO system_user (id, email, enabled, name, password, user_role) VALUES (4, 'user3', 'true', 'Alicja', 'user3', 'ROLE_USER');
+INSERT INTO system_user (id, email, enabled, name, password, user_role) VALUES (5, 'user4', 'true', 'Matylda', 'user4', 'ROLE_USER');
 
 
 --
--- TOC entry 3394 (class 0 OID 57359)
--- Dependencies: 192
+-- TOC entry 3560 (class 0 OID 57359)
+-- Dependencies: 191
 -- Data for Name: user_location; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
 
 --
--- TOC entry 3246 (class 2606 OID 43787)
+-- TOC entry 3241 (class 2606 OID 43787)
 -- Name: contact_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1461,7 +1440,7 @@ ALTER TABLE ONLY contact
 
 
 --
--- TOC entry 3255 (class 2606 OID 57408)
+-- TOC entry 3422 (class 2606 OID 57408)
 -- Name: control_point_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1470,7 +1449,7 @@ ALTER TABLE ONLY street_game_control_point
 
 
 --
--- TOC entry 3257 (class 2606 OID 57418)
+-- TOC entry 3424 (class 2606 OID 57418)
 -- Name: question_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1479,16 +1458,7 @@ ALTER TABLE ONLY street_game_question
 
 
 --
--- TOC entry 3261 (class 2606 OID 57425)
--- Name: question_status_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY street_game_user_question_status
-    ADD CONSTRAINT question_status_pk PRIMARY KEY (id);
-
-
---
--- TOC entry 3259 (class 2606 OID 57437)
+-- TOC entry 3426 (class 2606 OID 57437)
 -- Name: reached_points_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1497,7 +1467,7 @@ ALTER TABLE ONLY street_game_user_reached_point
 
 
 --
--- TOC entry 3250 (class 2606 OID 57386)
+-- TOC entry 3417 (class 2606 OID 57386)
 -- Name: street_game_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1506,7 +1476,7 @@ ALTER TABLE ONLY street_game
 
 
 --
--- TOC entry 3263 (class 2606 OID 57388)
+-- TOC entry 3430 (class 2606 OID 65611)
 -- Name: subscription_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1515,7 +1485,7 @@ ALTER TABLE ONLY street_game_subscription
 
 
 --
--- TOC entry 3248 (class 2606 OID 43789)
+-- TOC entry 3243 (class 2606 OID 43789)
 -- Name: system_user_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1524,7 +1494,781 @@ ALTER TABLE ONLY system_user
 
 
 --
--- TOC entry 3253 (class 2606 OID 57403)
+-- TOC entry 3245 (class 2606 OID 65551)
+-- Name: uk_001a38f668704877a4948219fc2; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_001a38f668704877a4948219fc2 UNIQUE (email);
+
+
+--
+-- TOC entry 3247 (class 2606 OID 65650)
+-- Name: uk_003179fc0c934e039473ef3b3bc; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_003179fc0c934e039473ef3b3bc UNIQUE (email);
+
+
+--
+-- TOC entry 3249 (class 2606 OID 65662)
+-- Name: uk_028cd66883dc4afabe8be8cddfe; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_028cd66883dc4afabe8be8cddfe UNIQUE (email);
+
+
+--
+-- TOC entry 3251 (class 2606 OID 65706)
+-- Name: uk_036af7d2465f42f6a22cce11af3; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_036af7d2465f42f6a22cce11af3 UNIQUE (email);
+
+
+--
+-- TOC entry 3253 (class 2606 OID 65684)
+-- Name: uk_04d869520e3c420d9b9c38077e3; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_04d869520e3c420d9b9c38077e3 UNIQUE (email);
+
+
+--
+-- TOC entry 3255 (class 2606 OID 65573)
+-- Name: uk_05f425c8971f4dc6bf414f79fa5; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_05f425c8971f4dc6bf414f79fa5 UNIQUE (email);
+
+
+--
+-- TOC entry 3257 (class 2606 OID 65704)
+-- Name: uk_0954deed67914ea5888b00c2435; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_0954deed67914ea5888b00c2435 UNIQUE (email);
+
+
+--
+-- TOC entry 3259 (class 2606 OID 65577)
+-- Name: uk_0b7a88bd4d3344958c5b739dcdd; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_0b7a88bd4d3344958c5b739dcdd UNIQUE (email);
+
+
+--
+-- TOC entry 3261 (class 2606 OID 65627)
+-- Name: uk_20620ab194b5464a91b6f1d186c; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_20620ab194b5464a91b6f1d186c UNIQUE (email);
+
+
+--
+-- TOC entry 3263 (class 2606 OID 65631)
+-- Name: uk_233feb3f72a942c3849ded7f540; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_233feb3f72a942c3849ded7f540 UNIQUE (email);
+
+
+--
+-- TOC entry 3265 (class 2606 OID 65583)
+-- Name: uk_2769a58fa6534c38a9f356d5854; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_2769a58fa6534c38a9f356d5854 UNIQUE (email);
+
+
+--
+-- TOC entry 3267 (class 2606 OID 65581)
+-- Name: uk_2b3a3b0a35614caa8024167d048; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_2b3a3b0a35614caa8024167d048 UNIQUE (email);
+
+
+--
+-- TOC entry 3269 (class 2606 OID 65674)
+-- Name: uk_2dbb1a37dcfd436e8aca9a8a8bd; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_2dbb1a37dcfd436e8aca9a8a8bd UNIQUE (email);
+
+
+--
+-- TOC entry 3271 (class 2606 OID 65555)
+-- Name: uk_31751cea98504895a1689dc6f02; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_31751cea98504895a1689dc6f02 UNIQUE (email);
+
+
+--
+-- TOC entry 3273 (class 2606 OID 65605)
+-- Name: uk_3380fdc88b4a42dbbff6e0ed895; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_3380fdc88b4a42dbbff6e0ed895 UNIQUE (email);
+
+
+--
+-- TOC entry 3275 (class 2606 OID 65575)
+-- Name: uk_34b89b4ee92d4cc18d81619b60c; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_34b89b4ee92d4cc18d81619b60c UNIQUE (email);
+
+
+--
+-- TOC entry 3277 (class 2606 OID 65569)
+-- Name: uk_34f899116d6e4378bf23bf3787c; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_34f899116d6e4378bf23bf3787c UNIQUE (email);
+
+
+--
+-- TOC entry 3279 (class 2606 OID 65563)
+-- Name: uk_395d2cd0b5ab4bb2ad297e7a067; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_395d2cd0b5ab4bb2ad297e7a067 UNIQUE (email);
+
+
+--
+-- TOC entry 3281 (class 2606 OID 65585)
+-- Name: uk_39636811e85c4b61a3a155526b4; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_39636811e85c4b61a3a155526b4 UNIQUE (email);
+
+
+--
+-- TOC entry 3283 (class 2606 OID 65724)
+-- Name: uk_3e837b271981416e8022f91d1ae; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_3e837b271981416e8022f91d1ae UNIQUE (email);
+
+
+--
+-- TOC entry 3285 (class 2606 OID 65666)
+-- Name: uk_41e4d6a4f3b84feab70d6896b06; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_41e4d6a4f3b84feab70d6896b06 UNIQUE (email);
+
+
+--
+-- TOC entry 3287 (class 2606 OID 65619)
+-- Name: uk_47c3f8dc15b24544b2130e3e613; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_47c3f8dc15b24544b2130e3e613 UNIQUE (email);
+
+
+--
+-- TOC entry 3289 (class 2606 OID 65718)
+-- Name: uk_4ceb48966d2140b1bf538d568ff; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_4ceb48966d2140b1bf538d568ff UNIQUE (email);
+
+
+--
+-- TOC entry 3291 (class 2606 OID 65601)
+-- Name: uk_4d36a26bd9cf483ab2e40d48c88; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_4d36a26bd9cf483ab2e40d48c88 UNIQUE (email);
+
+
+--
+-- TOC entry 3293 (class 2606 OID 65643)
+-- Name: uk_4ee0b04dacbf442aaa2801d4cca; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_4ee0b04dacbf442aaa2801d4cca UNIQUE (email);
+
+
+--
+-- TOC entry 3295 (class 2606 OID 65680)
+-- Name: uk_4f8180707d46413a8e6859c73d5; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_4f8180707d46413a8e6859c73d5 UNIQUE (email);
+
+
+--
+-- TOC entry 3297 (class 2606 OID 65561)
+-- Name: uk_501f3eba19a24fcea063cc22c6d; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_501f3eba19a24fcea063cc22c6d UNIQUE (email);
+
+
+--
+-- TOC entry 3299 (class 2606 OID 65710)
+-- Name: uk_5665c1c651b540d0a1efdcb1b66; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_5665c1c651b540d0a1efdcb1b66 UNIQUE (email);
+
+
+--
+-- TOC entry 3301 (class 2606 OID 65639)
+-- Name: uk_5a7b0623e4204b21b914839a627; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_5a7b0623e4204b21b914839a627 UNIQUE (email);
+
+
+--
+-- TOC entry 3303 (class 2606 OID 65716)
+-- Name: uk_60a83d8e40bd4cc0bf8190ec243; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_60a83d8e40bd4cc0bf8190ec243 UNIQUE (email);
+
+
+--
+-- TOC entry 3305 (class 2606 OID 65591)
+-- Name: uk_627c7554c3ec42b19fca86afe80; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_627c7554c3ec42b19fca86afe80 UNIQUE (email);
+
+
+--
+-- TOC entry 3307 (class 2606 OID 65714)
+-- Name: uk_68e0e7f6a8964339a824cfc6a01; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_68e0e7f6a8964339a824cfc6a01 UNIQUE (email);
+
+
+--
+-- TOC entry 3309 (class 2606 OID 65599)
+-- Name: uk_6a2fd9dbb4ca460f895836b8879; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_6a2fd9dbb4ca460f895836b8879 UNIQUE (email);
+
+
+--
+-- TOC entry 3311 (class 2606 OID 65682)
+-- Name: uk_6bbcdcd84ab64f93abb84d38e7b; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_6bbcdcd84ab64f93abb84d38e7b UNIQUE (email);
+
+
+--
+-- TOC entry 3313 (class 2606 OID 65589)
+-- Name: uk_6c7125c1ed0f4220ae8c038a1ff; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_6c7125c1ed0f4220ae8c038a1ff UNIQUE (email);
+
+
+--
+-- TOC entry 3315 (class 2606 OID 65672)
+-- Name: uk_6fb2683f35974254aa03c8b3e38; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_6fb2683f35974254aa03c8b3e38 UNIQUE (email);
+
+
+--
+-- TOC entry 3317 (class 2606 OID 65629)
+-- Name: uk_6fe863c3f9184f5bbee9dfeee8d; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_6fe863c3f9184f5bbee9dfeee8d UNIQUE (email);
+
+
+--
+-- TOC entry 3319 (class 2606 OID 65656)
+-- Name: uk_6fed93fea781405ea67e9f393b3; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_6fed93fea781405ea67e9f393b3 UNIQUE (email);
+
+
+--
+-- TOC entry 3321 (class 2606 OID 65720)
+-- Name: uk_785a58cc941b47119ec476d1cb5; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_785a58cc941b47119ec476d1cb5 UNIQUE (email);
+
+
+--
+-- TOC entry 3323 (class 2606 OID 65645)
+-- Name: uk_79d12002fe3c47349113119cde8; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_79d12002fe3c47349113119cde8 UNIQUE (email);
+
+
+--
+-- TOC entry 3325 (class 2606 OID 65678)
+-- Name: uk_79efb0dbc38b4889a6a47edb5aa; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_79efb0dbc38b4889a6a47edb5aa UNIQUE (email);
+
+
+--
+-- TOC entry 3327 (class 2606 OID 65700)
+-- Name: uk_7b52a81f342548bf99c1b60605d; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_7b52a81f342548bf99c1b60605d UNIQUE (email);
+
+
+--
+-- TOC entry 3329 (class 2606 OID 65652)
+-- Name: uk_7d402d66740f42b79bf3ae02141; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_7d402d66740f42b79bf3ae02141 UNIQUE (email);
+
+
+--
+-- TOC entry 3331 (class 2606 OID 65708)
+-- Name: uk_7d91c81f35d0457bbb0b50cf077; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_7d91c81f35d0457bbb0b50cf077 UNIQUE (email);
+
+
+--
+-- TOC entry 3333 (class 2606 OID 65613)
+-- Name: uk_804fe3f2d6d644dbb0237e96a4c; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_804fe3f2d6d644dbb0237e96a4c UNIQUE (email);
+
+
+--
+-- TOC entry 3335 (class 2606 OID 65668)
+-- Name: uk_8405ff261910449989ddcaff149; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_8405ff261910449989ddcaff149 UNIQUE (email);
+
+
+--
+-- TOC entry 3337 (class 2606 OID 65688)
+-- Name: uk_84bff89c67024da7ac95c4ae9ae; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_84bff89c67024da7ac95c4ae9ae UNIQUE (email);
+
+
+--
+-- TOC entry 3339 (class 2606 OID 65603)
+-- Name: uk_859716b63c344604b1c3b65e662; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_859716b63c344604b1c3b65e662 UNIQUE (email);
+
+
+--
+-- TOC entry 3341 (class 2606 OID 65722)
+-- Name: uk_885cebd0722941edbbe539734eb; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_885cebd0722941edbbe539734eb UNIQUE (email);
+
+
+--
+-- TOC entry 3343 (class 2606 OID 65635)
+-- Name: uk_8a8739051ade40589bbae3b84ac; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_8a8739051ade40589bbae3b84ac UNIQUE (email);
+
+
+--
+-- TOC entry 3345 (class 2606 OID 65633)
+-- Name: uk_8ecacb1df974450dbd6ee978e7b; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_8ecacb1df974450dbd6ee978e7b UNIQUE (email);
+
+
+--
+-- TOC entry 3347 (class 2606 OID 65676)
+-- Name: uk_8f1ac8909b814cd18c209bb54e7; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_8f1ac8909b814cd18c209bb54e7 UNIQUE (email);
+
+
+--
+-- TOC entry 3349 (class 2606 OID 65637)
+-- Name: uk_9820a28edd0b4e9fb5e9a146bde; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_9820a28edd0b4e9fb5e9a146bde UNIQUE (email);
+
+
+--
+-- TOC entry 3351 (class 2606 OID 65712)
+-- Name: uk_a11b598cacf142aca619a7d3416; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_a11b598cacf142aca619a7d3416 UNIQUE (email);
+
+
+--
+-- TOC entry 3353 (class 2606 OID 65641)
+-- Name: uk_a472c6c96c06431d955f5230c13; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_a472c6c96c06431d955f5230c13 UNIQUE (email);
+
+
+--
+-- TOC entry 3355 (class 2606 OID 65607)
+-- Name: uk_b07012f7bcbb4deba55b02d668a; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_b07012f7bcbb4deba55b02d668a UNIQUE (email);
+
+
+--
+-- TOC entry 3357 (class 2606 OID 65571)
+-- Name: uk_b0a43a41c8a24ceda57d3e2799b; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_b0a43a41c8a24ceda57d3e2799b UNIQUE (email);
+
+
+--
+-- TOC entry 3359 (class 2606 OID 65623)
+-- Name: uk_b10e523096a34e4e9c388fe25bd; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_b10e523096a34e4e9c388fe25bd UNIQUE (email);
+
+
+--
+-- TOC entry 3361 (class 2606 OID 65617)
+-- Name: uk_b1bbcfdbdecf4147bf49fa72ffa; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_b1bbcfdbdecf4147bf49fa72ffa UNIQUE (email);
+
+
+--
+-- TOC entry 3363 (class 2606 OID 65664)
+-- Name: uk_b3f66f36366d4dc8af2ee1068ed; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_b3f66f36366d4dc8af2ee1068ed UNIQUE (email);
+
+
+--
+-- TOC entry 3365 (class 2606 OID 65587)
+-- Name: uk_b4f45b7c268a40e3a0fdcfa1286; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_b4f45b7c268a40e3a0fdcfa1286 UNIQUE (email);
+
+
+--
+-- TOC entry 3367 (class 2606 OID 65692)
+-- Name: uk_b9f192189811459b8c36b4b7eac; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_b9f192189811459b8c36b4b7eac UNIQUE (email);
+
+
+--
+-- TOC entry 3369 (class 2606 OID 65565)
+-- Name: uk_bc5173b91bd046e388b57f0b407; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_bc5173b91bd046e388b57f0b407 UNIQUE (email);
+
+
+--
+-- TOC entry 3371 (class 2606 OID 65698)
+-- Name: uk_bf6c89298ae34984889ee871cef; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_bf6c89298ae34984889ee871cef UNIQUE (email);
+
+
+--
+-- TOC entry 3373 (class 2606 OID 65660)
+-- Name: uk_c431af05db0943fd8979769af35; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_c431af05db0943fd8979769af35 UNIQUE (email);
+
+
+--
+-- TOC entry 3375 (class 2606 OID 65658)
+-- Name: uk_c5298270b88e45dfbd2a8ea115e; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_c5298270b88e45dfbd2a8ea115e UNIQUE (email);
+
+
+--
+-- TOC entry 3377 (class 2606 OID 65593)
+-- Name: uk_c67e10a23358493eb922b09435c; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_c67e10a23358493eb922b09435c UNIQUE (email);
+
+
+--
+-- TOC entry 3379 (class 2606 OID 65690)
+-- Name: uk_c97de1df2c7f49debafd652b75d; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_c97de1df2c7f49debafd652b75d UNIQUE (email);
+
+
+--
+-- TOC entry 3381 (class 2606 OID 65549)
+-- Name: uk_ca2dcb1eedec4420a338dd1e699; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_ca2dcb1eedec4420a338dd1e699 UNIQUE (email);
+
+
+--
+-- TOC entry 3383 (class 2606 OID 65579)
+-- Name: uk_cab384ab6e8e4380b972fb94fbc; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_cab384ab6e8e4380b972fb94fbc UNIQUE (email);
+
+
+--
+-- TOC entry 3385 (class 2606 OID 65648)
+-- Name: uk_cc07797f8866452986d1e472d7e; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_cc07797f8866452986d1e472d7e UNIQUE (email);
+
+
+--
+-- TOC entry 3387 (class 2606 OID 65615)
+-- Name: uk_cea68dfe1a584afca8370be0643; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_cea68dfe1a584afca8370be0643 UNIQUE (email);
+
+
+--
+-- TOC entry 3389 (class 2606 OID 65609)
+-- Name: uk_cea77a0c82d7473094dff40059a; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_cea77a0c82d7473094dff40059a UNIQUE (email);
+
+
+--
+-- TOC entry 3391 (class 2606 OID 65567)
+-- Name: uk_d737cc459ed844e386fa0b1388b; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_d737cc459ed844e386fa0b1388b UNIQUE (email);
+
+
+--
+-- TOC entry 3393 (class 2606 OID 65670)
+-- Name: uk_e51744641cc54559830e80a7e4f; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_e51744641cc54559830e80a7e4f UNIQUE (email);
+
+
+--
+-- TOC entry 3395 (class 2606 OID 65597)
+-- Name: uk_e9c57b220e2348d1894ffb81a0c; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_e9c57b220e2348d1894ffb81a0c UNIQUE (email);
+
+
+--
+-- TOC entry 3397 (class 2606 OID 65625)
+-- Name: uk_eab7f1828ec94770b37f8b87676; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_eab7f1828ec94770b37f8b87676 UNIQUE (email);
+
+
+--
+-- TOC entry 3399 (class 2606 OID 65557)
+-- Name: uk_eb953e7ffad5488f97cf67941bf; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_eb953e7ffad5488f97cf67941bf UNIQUE (email);
+
+
+--
+-- TOC entry 3401 (class 2606 OID 65702)
+-- Name: uk_edcfc2a145254a78a5f2ddc0b5f; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_edcfc2a145254a78a5f2ddc0b5f UNIQUE (email);
+
+
+--
+-- TOC entry 3403 (class 2606 OID 65696)
+-- Name: uk_f2fd812e41c1410fa6634c13d40; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_f2fd812e41c1410fa6634c13d40 UNIQUE (email);
+
+
+--
+-- TOC entry 3405 (class 2606 OID 65595)
+-- Name: uk_f4d1e0ed00c94d8f9423ebdfff8; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_f4d1e0ed00c94d8f9423ebdfff8 UNIQUE (email);
+
+
+--
+-- TOC entry 3407 (class 2606 OID 65654)
+-- Name: uk_f76cc7c7a33f4b5d8b25fafdadc; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_f76cc7c7a33f4b5d8b25fafdadc UNIQUE (email);
+
+
+--
+-- TOC entry 3409 (class 2606 OID 65621)
+-- Name: uk_fa0d11010216413f82fc002d1cd; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_fa0d11010216413f82fc002d1cd UNIQUE (email);
+
+
+--
+-- TOC entry 3411 (class 2606 OID 65686)
+-- Name: uk_fc221833c0d94644a7f72589010; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_fc221833c0d94644a7f72589010 UNIQUE (email);
+
+
+--
+-- TOC entry 3413 (class 2606 OID 65694)
+-- Name: uk_fe8bc5c394df4c418470455d3a6; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_fe8bc5c394df4c418470455d3a6 UNIQUE (email);
+
+
+--
+-- TOC entry 3415 (class 2606 OID 65559)
+-- Name: uk_ff2a27d712ed4b9fbe1d1199734; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY system_user
+    ADD CONSTRAINT uk_ff2a27d712ed4b9fbe1d1199734 UNIQUE (email);
+
+
+--
+-- TOC entry 3420 (class 2606 OID 57403)
 -- Name: user_location_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1533,7 +2277,7 @@ ALTER TABLE ONLY user_location
 
 
 --
--- TOC entry 3251 (class 1259 OID 57453)
+-- TOC entry 3418 (class 1259 OID 57453)
 -- Name: fki_steet_game_fk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1541,7 +2285,7 @@ CREATE INDEX fki_steet_game_fk ON user_location USING btree (street_game_id);
 
 
 --
--- TOC entry 3266 (class 2606 OID 57419)
+-- TOC entry 3433 (class 2606 OID 57419)
 -- Name: control_point_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1550,7 +2294,7 @@ ALTER TABLE ONLY street_game_question
 
 
 --
--- TOC entry 3268 (class 2606 OID 57443)
+-- TOC entry 3435 (class 2606 OID 57443)
 -- Name: control_point_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1559,16 +2303,13 @@ ALTER TABLE ONLY street_game_user_reached_point
 
 
 --
--- TOC entry 3270 (class 2606 OID 57431)
+-- TOC entry 3437 (class 2606 OID 57431)
 -- Name: question_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY street_game_user_question_status
-    ADD CONSTRAINT question_id FOREIGN KEY (question_id) REFERENCES street_game_question(id);
-
 
 --
--- TOC entry 3264 (class 2606 OID 57448)
+-- TOC entry 3431 (class 2606 OID 57448)
 -- Name: steet_game_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1577,7 +2318,7 @@ ALTER TABLE ONLY user_location
 
 
 --
--- TOC entry 3271 (class 2606 OID 57394)
+-- TOC entry 3438 (class 2606 OID 57394)
 -- Name: street_game_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1586,7 +2327,7 @@ ALTER TABLE ONLY street_game_subscription
 
 
 --
--- TOC entry 3265 (class 2606 OID 57409)
+-- TOC entry 3432 (class 2606 OID 57409)
 -- Name: street_game_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1595,7 +2336,7 @@ ALTER TABLE ONLY street_game_control_point
 
 
 --
--- TOC entry 3272 (class 2606 OID 57389)
+-- TOC entry 3439 (class 2606 OID 57389)
 -- Name: user_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1603,17 +2344,9 @@ ALTER TABLE ONLY street_game_subscription
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES system_user(id);
 
 
---
--- TOC entry 3269 (class 2606 OID 57426)
--- Name: user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY street_game_user_question_status
-    ADD CONSTRAINT user_id_fk FOREIGN KEY (user_id) REFERENCES system_user(id);
-
 
 --
--- TOC entry 3267 (class 2606 OID 57438)
+-- TOC entry 3434 (class 2606 OID 57438)
 -- Name: user_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1622,7 +2355,7 @@ ALTER TABLE ONLY street_game_user_reached_point
 
 
 --
--- TOC entry 3406 (class 0 OID 0)
+-- TOC entry 3572 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -1633,7 +2366,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2015-12-13 14:58:50
+-- Completed on 2016-01-15 00:09:13
 
 --
 -- PostgreSQL database dump complete

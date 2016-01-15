@@ -1,8 +1,12 @@
 package streetChase.model;
 
+import javax.persistence.*;
+
 /**
  * Created by Martyna on 2016-01-11.
  */
+@Entity
+@Table(name = "street_game_question", schema = "public")
 public class Question {
 
     public int getId() {
@@ -14,11 +18,11 @@ public class Question {
     }
 
     public int getControl_point_id() {
-        return control_point_id;
+        return controlPoint;
     }
 
     public void setControl_point_id(int control_point_id) {
-        this.control_point_id = control_point_id;
+        this.controlPoint = control_point_id;
     }
 
     public String getAnswer() {
@@ -37,10 +41,13 @@ public class Question {
         this.question = question;
     }
 
+    @Id
+    @GeneratedValue
     private int id;
     private String question;
     private String answer;
-    private int control_point_id;
+    @Column(name = "control_point_id")
+    private int controlPoint;
 
     public Question() {}
 

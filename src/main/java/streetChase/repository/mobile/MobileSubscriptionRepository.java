@@ -1,4 +1,4 @@
-package streetChase.repository;
+package streetChase.repository.mobile;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -8,11 +8,11 @@ import streetChase.model.User;
 
 import java.util.List;
 
-public interface SubRepository extends CrudRepository<Subscription, Integer> {
+public interface MobileSubscriptionRepository extends CrudRepository<Subscription, Integer> {
     List<Subscription> findByUser(int id);
     List<Subscription> findByGame (int id);
-    public final static String FIND_BY_KEYWORD_SUPERVISOR_QUERY =
+    public final static String FIND_BY_GAME_AND_USER =
             "select t from Subscription t where t.game = :game and t.user = :user";
-    @Query(FIND_BY_KEYWORD_SUPERVISOR_QUERY)
+    @Query(FIND_BY_GAME_AND_USER)
     public Subscription findByUserAndGame(@Param("user") int user, @Param("game") int game);
 }

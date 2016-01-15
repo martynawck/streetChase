@@ -1,12 +1,9 @@
-package streetChase.service;
+package streetChase.service.mobile;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import streetChase.model.StreetGame;
-import streetChase.model.Subscription;
-import streetChase.repository.StreetGameRepository;
+import streetChase.repository.mobile.MobileStreetGameRepository;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,12 +12,10 @@ import java.util.List;
  * Created by Martyna on 2016-01-12.
  */
 @Service
-public class SGServiceImpl implements SGService {
+public class MobileStreetGameServiceImpl implements MobileStreetGameService {
 
     @Resource
-    private StreetGameRepository streetGameRepository;
-
-
+    private MobileStreetGameRepository streetGameRepository;
 
     @Override
     @Transactional
@@ -45,16 +40,5 @@ public class SGServiceImpl implements SGService {
     public void deleteStreetGame(StreetGame s) {
         streetGameRepository.delete(s);
     }
-
-  /*  @Override
-    @Transactional
-    public  List findByUserSubscription(int id) {
-        //final PageRequest pageRequest = new PageRequest(page, maxResults, sortByTitleASC());
-        return streetGameRepository.findSubscribedByUserId(id);//findByTitleAndSupervisor("%" + keyword + "%", supervisor, pageRequest);
-    }
-*/
-
-
-
 
 }

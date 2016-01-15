@@ -1,11 +1,26 @@
 package streetChase.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 /**
  * Created by Martyna on 2016-01-11.
  */
+
+@Entity
+@Table(name = "street_game_user_reached_point", schema = "public")
+
 public class UserReachedPoint {
+
+    @Id
+    @GeneratedValue
+    private int id;
+    private int user_id;
+    private int control_point_id;
+    private Timestamp timestamp;
 
     public int getId() {
         return id;
@@ -38,12 +53,6 @@ public class UserReachedPoint {
     public void setControl_point_id(int control_point_id) {
         this.control_point_id = control_point_id;
     }
-
-    private int id;
-    private int user_id;
-    private int control_point_id;
-    private Timestamp timestamp;
-
 
     public UserReachedPoint() {}
 

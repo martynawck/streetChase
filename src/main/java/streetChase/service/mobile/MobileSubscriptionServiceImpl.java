@@ -1,11 +1,9 @@
-package streetChase.service;
+package streetChase.service.mobile;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import streetChase.model.StreetGame;
 import streetChase.model.Subscription;
-import streetChase.repository.StreetGameRepository;
-import streetChase.repository.SubRepository;
+import streetChase.repository.mobile.MobileSubscriptionRepository;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -14,10 +12,10 @@ import java.util.List;
  * Created by Martyna on 2016-01-12.
  */
 @Service
-public class SubServiceImpl implements SubService {
+public class MobileSubscriptionServiceImpl implements MobileSubscriptionService {
 
     @Resource
-    private SubRepository subRepository;
+    private MobileSubscriptionRepository subRepository;
 
 
     @Override
@@ -44,7 +42,6 @@ public class SubServiceImpl implements SubService {
         return subRepository.findOne(id);
     }
 
-
     @Override
     @Transactional
     public Subscription findByUserAndGame(int user, int game) {
@@ -56,16 +53,6 @@ public class SubServiceImpl implements SubService {
     public void createSubscription(Subscription s) {
         subRepository.save(s);//findByUserAndGame(user, game);//fi.fin(id);
     }
-
-  /*  @Override
-    @Transactional
-    public  List findByUserSubscription(int id) {
-        //final PageRequest pageRequest = new PageRequest(page, maxResults, sortByTitleASC());
-        return streetGameRepository.findSubscribedByUserId(id);//findByTitleAndSupervisor("%" + keyword + "%", supervisor, pageRequest);
-    }
-*/
-
-
 
 
 }

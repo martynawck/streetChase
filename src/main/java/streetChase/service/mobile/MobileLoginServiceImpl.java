@@ -1,14 +1,11 @@
-package streetChase.service;
+package streetChase.service.mobile;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import streetChase.model.StreetGame;
 import streetChase.model.User;
-import streetChase.repository.MobileLoginRepository;
-import streetChase.repository.StreetGameRepository;
+import streetChase.repository.mobile.MobileLoginRepository;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Created by Martyna on 2016-01-12.

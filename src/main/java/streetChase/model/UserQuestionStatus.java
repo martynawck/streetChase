@@ -1,11 +1,24 @@
 package streetChase.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 /**
  * Created by Martyna on 2016-01-11.
  */
+//@Entity
+//@Table(name = "street_game_user_question_status", schema = "public")
 public class UserQuestionStatus {
+
+  //  @Id
+   // @GeneratedValue
+    private int id;
+    private int question_id;
+    private int user_id;
+    private Timestamp timestamp;
 
     public Timestamp getTimestamp() {
         return timestamp;
@@ -13,14 +26,6 @@ public class UserQuestionStatus {
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public int getUser_id() {
@@ -47,11 +52,7 @@ public class UserQuestionStatus {
         this.id = id;
     }
 
-    private int id;
-    private int question_id;
-    private int user_id;
-    private String status;
-    private Timestamp timestamp;
+
 
     public UserQuestionStatus() {}
 

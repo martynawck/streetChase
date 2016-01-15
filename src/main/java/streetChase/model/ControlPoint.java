@@ -19,6 +19,17 @@ public class ControlPoint {
     private int id;
     private int street_game_id;
     private String name;
+    private int next_point_id;
+    private Point location;
+    private boolean starting_point;
+
+    public int getNext_point_id() {
+        return next_point_id;
+    }
+
+    public void setNext_point_id(int next_point_id) {
+        this.next_point_id = next_point_id;
+    }
 
     public Point getLocation() {
         return location;
@@ -60,8 +71,6 @@ public class ControlPoint {
         this.id = id;
     }
 
-    private Point location;
-    private boolean starting_point;
 
     public ControlPoint() {}
 
