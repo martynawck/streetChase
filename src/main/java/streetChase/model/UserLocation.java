@@ -1,23 +1,22 @@
 package streetChase.model;
 
 import com.vividsolutions.jts.geom.Point;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
  * Created by Martyna on 2016-01-14.
  */
 @Entity
-@Table(name = "street_game_user_question_status", schema = "public")
+@Table(name = "user_location", schema = "public")
 public class UserLocation {
 
     @Id
     @GeneratedValue
     private int id;
+    @Type(type = "org.hibernate.spatial.GeometryType")
     private Point location;
     private Timestamp timestamp;
     private int street_game_id;

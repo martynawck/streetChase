@@ -24,4 +24,7 @@
             url="jdbc:postgresql://localhost:5432/gis" />
         <resources mapping="/resources/**" location="/resources/" />
 
+
+        <!--property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect"/-->
+
 </Context>
