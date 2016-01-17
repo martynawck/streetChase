@@ -1,13 +1,10 @@
 package streetChase.model;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import org.apache.commons.lang.StringUtils;
+import streetChase.dto.StreetGameDto;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Martyna on 2016-01-11.
@@ -25,6 +22,24 @@ public class StreetGame {
     private boolean is_private;
     private Timestamp start_time;
     private Timestamp end_time;
+    private String start_point_description;
+    @Column(name = "creator_id")
+    private int creatorId;
+
+
+
+    public StreetGame(StreetGameDto gameDto, int creatorId) {
+        if (gameDto == null || creatorId == 0)
+            return;
+
+        this.name = gameDto.getName();
+        this.description = gameDto.getDescription();
+        this.is_private = gameDto.isPrivate();
+        this.start_time = gameDto.getStartTime();
+        this.end_time = gameDto.getEndTime();
+        this.start_point_description = gameDto.getStartPointDesc();
+        this.creatorId = creatorId;
+    }
 
     public String getStart_point_description() {
         return start_point_description;
@@ -34,9 +49,6 @@ public class StreetGame {
         this.start_point_description = start_point_description;
     }
 
-    private String start_point_description;
-    @Column(name = "creator_id")
-    private int creator;
 
 /*
     public List<User> getUsers() {
@@ -56,12 +68,12 @@ public class StreetGame {
 */
     public StreetGame() {}
 
-    public int getCreator() {
-        return creator;
+    public int getCreatorId() {
+        return creatorId;
     }
 
-    public void setCreator(int creator) {
-        this.creator = creator;
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
     }
 
 
@@ -124,5 +136,24 @@ public class StreetGame {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    public void applyChanges(StreetGameDto gameDto) {
+        if (gameDto == null)
+            return;
+
+        if (StringUtils.isNotBlank(gameDto.getName()) && !this.name.equals(gameDto.getName()))
+            this.name = gameDto.getName();
+        if (StringUtils.isNotBlank(gameDto.getDescription()) && !this.description.equals(gameDto.getDescription()))
+            this.description = gameDto.getDescription();
+        if (StringUtils.isNotBlank(gameDto.getStartPointDesc()) && !this.start_point_description.equals(gameDto.getStartPointDesc()))
+            this.start_point_description = gameDto.getStartPointDesc();
+
+        this.is_private = gameDto.isPrivate();
+
+        if (gameDto.getStartTime() != null && !this.start_time.equals(gameDto.getStartTime()))
+            this.start_time = gameDto.getStartTime();
+        if (gameDto.getEndTime() != null && !this.end_time.equals(gameDto.getEndTime()))
+            this.end_time = gameDto.getEndTime();
     }
 }

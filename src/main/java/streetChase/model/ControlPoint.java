@@ -23,6 +23,7 @@ public class ControlPoint {
     private Point location;
     private boolean starting_point;
 
+
     public int getNext_point_id() {
         return next_point_id;
     }

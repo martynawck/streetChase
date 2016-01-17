@@ -32,7 +32,7 @@ public class MobileStreetGameServiceImpl implements MobileStreetGameService {
     @Override
     @Transactional
     public List findByCreator(int id) {
-        return streetGameRepository.findByCreator(id);
+        return streetGameRepository.findByCreatorId(id);
     }
 
     @Override
