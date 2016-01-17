@@ -9,14 +9,14 @@ public class PointDto {
 
     private int id;
     private String name;
-    private Point location;     // TODO JAK TO PRZEKAZYWAC
+    //private Point location;     // TODO JAK TO PRZEKAZYWAC
     private String question;
     private String answer;
 
     public PointDto(ControlPoint point, Question question) {
         this.id = point.getId();
         this.name = point.getName();
-        this.location = point.getLocation();
+        //this.location = point.getLocation();
         this.question = question.getQuestion();
         this.answer = question.getAnswer();
     }
@@ -37,13 +37,13 @@ public class PointDto {
         this.name = name;
     }
 
-    public Point getLocation() {
-        return location;
-    }
-
-    public void setLocation(Point location) {
-        this.location = location;
-    }
+//    public Point getLocation() {
+//        return location;
+//    }
+//
+//    public void setLocation(Point location) {
+//        this.location = location;
+//    }
 
     public String getQuestion() {
         return question;

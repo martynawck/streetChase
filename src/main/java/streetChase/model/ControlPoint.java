@@ -1,6 +1,8 @@
 package streetChase.model;
 
-import org.postgis.Point;
+
+
+import com.vividsolutions.jts.geom.Point;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
