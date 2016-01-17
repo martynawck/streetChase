@@ -1,28 +1,24 @@
-package streetChase.service.mobile;
+package streetChase.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import streetChase.model.Question;
-import streetChase.repository.mobile.MobileQuestionRepository;
+import streetChase.repository.QuestionRepository;
 
 import javax.annotation.Resource;
 
-/**
- * Created by Martyna on 2016-01-12.
- */
+
 @Service
-public class MobileQuestionServiceImpl implements MobileQuestionService {
+public class QuestionService {
 
     @Resource
-    private MobileQuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
-    @Override
     @Transactional
     public Question findById(int id) {
         return questionRepository.findOne(id);
     }
 
-    @Override
     @Transactional
     public Question findByControlPoint(int id) {
         return questionRepository.findByControlPoint(id);

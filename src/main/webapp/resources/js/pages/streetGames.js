@@ -1,4 +1,4 @@
-function contactsController($scope, $http) {
+function streetGamesController($scope, $http) {
 
     $scope.url = "/streetChase/protected/streetGames/";
 
@@ -6,7 +6,7 @@ function contactsController($scope, $http) {
         var url = $scope.url;
         $scope.startDialogAjaxRequest();
 
-        $http.get(url, config)
+        $http.get(url)
             .success(function (data) {
                 $scope.finishAjaxCallOnSuccess(data, null, false);
             })
@@ -157,10 +157,6 @@ function contactsController($scope, $http) {
 
         var config = {};
 
-        if($scope.searchFor){
-            $scope.addSearchParametersIfNeeded(config, isPagination);
-        }
-
         $http.get(url, config)
             .success(function (data) {
                 $scope.finishAjaxCallOnSuccess(data, "#searchContactsModal", isPagination);
@@ -192,12 +188,5 @@ function contactsController($scope, $http) {
             });
     };
 
-    $scope.resetSearch = function(){
-        $scope.searchFor = "";
-        $scope.pageToGet = 0;
-        $scope.getContactList();
-        $scope.displaySearchMessage = false;
-    }
-
-    $scope.getContactList();
+    $scope.getGamesList();
 }

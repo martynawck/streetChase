@@ -1,4 +1,4 @@
-package streetChase.repository.mobile;
+package streetChase.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -8,7 +8,7 @@ import streetChase.model.Subscription;
 
 import java.util.List;
 
-public interface MobileControlPointRepository extends CrudRepository<ControlPoint, Integer> {
+public interface ControlPointRepository extends CrudRepository<ControlPoint, Integer> {
     public final static String FIND_GAME_STARTING_POINT =
             "select t from ControlPoint t where t.street_game_id = :game_id and t.starting_point = true";
     @Query(FIND_GAME_STARTING_POINT)

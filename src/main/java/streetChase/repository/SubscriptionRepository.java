@@ -1,4 +1,4 @@
-package streetChase.repository.mobile;
+package streetChase.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -8,7 +8,7 @@ import streetChase.model.User;
 
 import java.util.List;
 
-public interface MobileSubscriptionRepository extends CrudRepository<Subscription, Integer> {
+public interface SubscriptionRepository extends CrudRepository<Subscription, Integer> {
     List<Subscription> findByUser(int id);
     List<Subscription> findByGame (int id);
     public final static String FIND_BY_GAME_AND_USER =

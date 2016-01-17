@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import streetChase.model.StreetGame;
 import streetChase.model.Subscription;
-import streetChase.service.mobile.MobileLoginService;
-import streetChase.service.mobile.MobileStreetGameService;
-import streetChase.service.mobile.MobileSubscriptionService;
+import streetChase.service.LoginService;
+import streetChase.service.StreetGameService;
+import streetChase.service.SubscriptionService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +19,10 @@ import java.util.List;
 public class MobileStreetGameController {
 
     @Autowired
-    private MobileStreetGameService sgService;
+    private StreetGameService sgService;
 
     @Autowired
-    private MobileLoginService mobileLoginService;
-
-    @Autowired
-    private MobileSubscriptionService subService;
+    private SubscriptionService subService;
 
     @RequestMapping(value="/list", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<StreetGame>> getAllGames() {

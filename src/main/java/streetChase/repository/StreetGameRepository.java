@@ -1,4 +1,4 @@
-package streetChase.repository.mobile;
+package streetChase.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +8,7 @@ import streetChase.model.StreetGame;
 
 import java.util.List;
 
-public interface MobileStreetGameRepository extends Repository<StreetGame,Integer> ,JpaRepository<StreetGame, Integer>, CrudRepository<StreetGame, Integer> {
+public interface StreetGameRepository extends Repository<StreetGame,Integer> ,JpaRepository<StreetGame, Integer>, CrudRepository<StreetGame, Integer> {
 
     //List<StreetGame> findByIs_private(boolean is_private);
 

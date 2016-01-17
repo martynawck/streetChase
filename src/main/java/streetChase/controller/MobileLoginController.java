@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import streetChase.model.User;
-import streetChase.service.mobile.MobileLoginService;
+import streetChase.service.LoginService;
 
 @Controller
 @RequestMapping(value = "/mobile")
 public class MobileLoginController {
 
     @Autowired
-    private MobileLoginService mobileLoginService;
+    private LoginService mobileLoginService;
 
     @RequestMapping(value="/controller", method = RequestMethod.GET)
     @ResponseBody

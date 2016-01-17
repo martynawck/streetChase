@@ -1,4 +1,4 @@
-package streetChase.repository.mobile;
+package streetChase.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -9,6 +9,6 @@ import streetChase.model.Subscription;
 
 import java.util.List;
 
-public interface MobileQuestionRepository extends CrudRepository<Question, Integer> {
+public interface QuestionRepository extends CrudRepository<Question, Integer> {
     Question findByControlPoint(int id);
 }

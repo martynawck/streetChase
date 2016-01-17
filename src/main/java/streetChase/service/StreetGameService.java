@@ -6,19 +6,38 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import streetChase.dto.StreetGameDto;
 import streetChase.model.StreetGame;
-import streetChase.repository.mobile.MobileStreetGameRepository;
+import streetChase.repository.StreetGameRepository;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Service
-@Transactional
-public class StreetGamesService {
+public class StreetGameService {
 
-    @Autowired
-    private MobileStreetGameRepository streetGameRepository;
+    @Resource
+    private StreetGameRepository streetGameRepository;
 
+    @Transactional
+    public List findAll() {
+        return streetGameRepository.findAll();
+    }
+
+    @Transactional
+    public StreetGame findById(int id) {
+        return streetGameRepository.findOne(id);
+    }
+
+    @Transactional
+    public List<StreetGame> findByCreator(int id) {
+        return streetGameRepository.findByCreatorId(id);
+    }
+
+    @Transactional
+    public void deleteStreetGame(StreetGame game) { streetGameRepository.delete(game); }
+
+    @Transactional
     public boolean save(StreetGameDto gameDto, int creatorId) {
         if (gameDto.getId() == 0) {
             streetGameRepository.save(new StreetGame(gameDto, creatorId));
@@ -40,7 +59,7 @@ public class StreetGamesService {
     }
 
     @Transactional(readOnly = true)
-    public List<StreetGameDto> findForCreator(int creatorId) {
+    public List<StreetGameDto> findDtoListForCreator(int creatorId) {
         Iterable<StreetGame> gamesList = streetGameRepository.findByCreatorId(creatorId);
         List<StreetGameDto> resultList = new ArrayList<StreetGameDto>();
         for (StreetGame s : gamesList) {
@@ -55,7 +74,7 @@ public class StreetGamesService {
     }
 
     @Transactional(readOnly = true)
-    public List<StreetGameDto> findAll() {
+    public List<StreetGameDto> findAllAsDtos() {
         return convertToDtoList(streetGameRepository.findAll());
     }
 

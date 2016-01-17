@@ -1,43 +1,37 @@
 package streetChase.controller;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import streetChase.model.Event;
-import streetChase.model.Question;
 import streetChase.model.UserLocation;
 import streetChase.service.EventService;
-import streetChase.service.mobile.MobileLoginService;
-import streetChase.service.mobile.MobileUserLocationService;
+import streetChase.service.UserLocationService;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/mobile")
 public class MobileUserLocationController {
 
     @Autowired
-    private MobileUserLocationService mobileUserLocationService;
+    private UserLocationService mobileUserLocationService;
 
     @Autowired
     private EventService eventService;
 
 
-    // nie dzia³¹!!!
+    // nie dziaï¿½ï¿½!!!
     @RequestMapping(value = "/user_location", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Void> greeting(@RequestParam(value="id") int user_id, @RequestParam(value="timestamp") long timestamp, @RequestParam(value="game") int game) {
      //   Double x = Double.parseDouble(location_x);

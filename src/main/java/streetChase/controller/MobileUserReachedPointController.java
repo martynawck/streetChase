@@ -7,10 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import streetChase.model.UserQuestionStatus;
 import streetChase.model.UserReachedPoint;
-import streetChase.service.mobile.MobileLoginService;
-import streetChase.service.mobile.MobileUserReachedPointService;
+import streetChase.service.UserReachedPointService;
 
 import java.sql.Timestamp;
 
@@ -19,7 +17,7 @@ import java.sql.Timestamp;
 public class MobileUserReachedPointController {
 
     @Autowired
-    private MobileUserReachedPointService mobileUserReachedPointService;
+    private UserReachedPointService mobileUserReachedPointService;
 
     @RequestMapping(value = "/user_reached_point/{user_id}/{control_point}/{timestamp}", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Void> saveUserQuestionStatus(@PathVariable("control_point") int control_point,

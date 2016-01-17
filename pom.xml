@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <groupId>uaiHebert</groupId>
-    <artifactId>uaiContacts</artifactId>
+    <groupId>streetChase</groupId>
+    <artifactId>streetChase</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <build>
-        <finalName>uaiContacts</finalName>
+        <finalName>streetChase</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>

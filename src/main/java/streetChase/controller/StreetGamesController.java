@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import streetChase.dto.StreetGameDto;
 import streetChase.model.User;
-import streetChase.service.StreetGamesService;
+import streetChase.service.StreetGameService;
 
 import java.util.List;
 import java.util.Locale;
@@ -22,7 +22,7 @@ import java.util.Locale;
 public class StreetGamesController {
 
     @Autowired
-    private StreetGamesService streetGameService;
+    private StreetGameService streetGameService;
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView welcome() {
@@ -74,9 +74,9 @@ public class StreetGamesController {
     private ResponseEntity<List<StreetGameDto>> createGamesListResponse() {
         List<StreetGameDto> list = null;
         if (isAdmin()) {
-            list = streetGameService.findAll();
+            list = streetGameService.findAllAsDtos();
         } else {
-            list = streetGameService.findForCreator(getUserId());
+            list = streetGameService.findDtoListForCreator(getUserId());
         }
 
         return new ResponseEntity< List<StreetGameDto> >(list, HttpStatus.OK);

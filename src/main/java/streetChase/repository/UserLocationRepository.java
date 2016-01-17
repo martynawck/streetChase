@@ -1,8 +1,8 @@
-package streetChase.repository.mobile;
+package streetChase.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import streetChase.model.UserLocation;
 import streetChase.model.UserQuestionStatus;
 
-public interface MobileUserLocationRepository extends CrudRepository<UserLocation, Integer> {
+public interface UserLocationRepository extends CrudRepository<UserLocation, Integer> {
 }
