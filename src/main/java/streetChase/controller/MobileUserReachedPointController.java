@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import streetChase.model.UserQuestionStatus;
 import streetChase.model.UserReachedPoint;
 import streetChase.service.mobile.MobileLoginService;
 import streetChase.service.mobile.MobileUserReachedPointService;

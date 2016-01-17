@@ -1,7 +1,6 @@
 package streetChase.service.mobile;
 
 import streetChase.model.Question;
-import streetChase.model.UserQuestionStatus;
 import streetChase.model.UserReachedPoint;
 
 /**

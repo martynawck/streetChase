@@ -3,7 +3,6 @@ package streetChase.service.mobile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import streetChase.model.UserLocation;
-import streetChase.model.UserQuestionStatus;
 import streetChase.repository.mobile.MobileUserLocationRepository;
 
 
