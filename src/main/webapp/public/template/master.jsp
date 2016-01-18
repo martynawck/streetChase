@@ -1,30 +1,52 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!doctype html>
-<html lang="pt-BR" id="ng-app" ng-app="">
-<head>
-        <title><spring:message  code="project.title" /></title>
-        <link href="<c:url value='/resources/css/bootstrap.min.css'  />" rel="stylesheet"/>
-        <link href="<c:url value='/resources/css/bootstrap-responsive.min.css'  />" rel="stylesheet"/>
+<html lang="pl-PL">
+<%--<html>--%>
+    <head>
+        <title><spring:message code="project.title"/></title>
+        <%--<link href="<c:url value='/resources/css/bootstrap.min.css'  />" rel="stylesheet"/>--%>
+        <%--<link href="<c:url value='/resources/css/bootstrap-responsive.min.css'  />" rel="stylesheet"/>--%>
         <link href="<c:url value='/resources/css/project_style.css'  />" rel="stylesheet"/>
+        <link href="<c:url value='/resources/bower_components/mobile-angular-ui/dist/css/mobile-angular-ui-base.min.css'  />"
+              rel="stylesheet"/>
+        <link href="<c:url value='/resources/bower_components/mobile-angular-ui/dist/css/mobile-angular-ui-desktop.min.css'  />"
+              rel="stylesheet"/>
+        <link href="<c:url value='/resources/bower_components/mobile-angular-ui/dist/css/mobile-angular-ui-hover.min.css'  />"
+              rel="stylesheet"/>
+
         <script src="<c:url value='/resources/js/jquery-1.9.1.min.js' />"></script>
         <script src="<c:url value='/resources/js/angular.min.js' />"></script>
-    </head>
-    <body>
-        <div class="container">
-            <tiles:insertAttribute name="header" />
+        <script src="<c:url value='/resources/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.min.js' />"></script>
+        <script src="<c:url value='/resources/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.gestures.min.js' />"></script>
 
-            <tiles:insertAttribute name="body" />
+        <script src='//maps.googleapis.com/maps/api/js?key=AIzaSyA4AevpY6ENySQOgqadisjnYbZKYf4yybE'></script>
+        <script src="<c:url value='/resources/bower_components/lodash/dist/lodash.js' />"></script>
+        <script src="<c:url value='/resources/bower_components/angular-simple-logger/dist/angular-simple-logger.js' />"></script>
+        <script src="<c:url value='/resources/bower_components/angular-google-maps/dist/angular-google-maps.js' />"></script>
+
+        <script src="<c:url value='/resources/js/streetChaseApp.js' />"></script>
+
+    </head>
+    <body ng-app="streetChaseApp" class="has-navbar-top">
+    <%--<body class="has-navbar-top">--%>
+        <div class="app">
+            <tiles:insertAttribute name="header"/>
+
+            <tiles:insertAttribute name="body"/>
         </div>
 
         <!--[if IE]>
-            <script src="<c:url value='/resources/js/bootstrap.min.ie.js' />"></script>
+        <script src="<c:url value='/resources/js/bootstrap.min.ie.js' />"></script>
         <![endif]-->
         <!--[if !IE]><!-->
-            <script src="<c:url value='/resources/js/bootstrap.min.js' />"></script>
+        <script src="<c:url value='/resources/js/bootstrap.min.js' />"></script>
         <!--<![endif]-->
 
-        <tiles:insertAttribute name="footer" />
+        <tiles:insertAttribute name="footer"/>
+
+
+
     </body>
 </html>

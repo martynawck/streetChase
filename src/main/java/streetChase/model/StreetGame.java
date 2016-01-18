@@ -35,10 +35,13 @@ public class StreetGame {
         this.name = gameDto.getName();
         this.description = gameDto.getDescription();
         this.is_private = gameDto.isPrivate();
-        this.start_time = gameDto.getStartTime();
-        this.end_time = gameDto.getEndTime();
         this.start_point_description = gameDto.getStartPointDesc();
         this.creatorId = creatorId;
+
+        if (gameDto.getStartTime() != null)
+            this.start_time = new Timestamp(gameDto.getStartTime().getTime());
+        if (gameDto.getEndTime() != null)
+            this.end_time = new Timestamp(gameDto.getEndTime().getTime());
     }
 
     public String getStart_point_description() {
@@ -151,9 +154,9 @@ public class StreetGame {
 
         this.is_private = gameDto.isPrivate();
 
-        if (gameDto.getStartTime() != null && !this.start_time.equals(gameDto.getStartTime()))
-            this.start_time = gameDto.getStartTime();
-        if (gameDto.getEndTime() != null && !this.end_time.equals(gameDto.getEndTime()))
-            this.end_time = gameDto.getEndTime();
+        if (gameDto.getStartTime() != null && this.start_time.getTime() != gameDto.getStartTime().getTime())
+            this.start_time = new Timestamp(gameDto.getStartTime().getTime());
+        if (gameDto.getEndTime() != null && this.end_time.getTime() != gameDto.getEndTime().getTime())
+            this.end_time = new Timestamp(gameDto.getEndTime().getTime());
     }
 }

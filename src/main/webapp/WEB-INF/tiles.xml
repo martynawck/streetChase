@@ -16,6 +16,9 @@
     <definition name="streetGamesList" extends="master.page">
         <put-attribute name="body" value="/protected/streetgames/streetGames.jsp"/>
     </definition>
+    <definition name="streetGamesAdd" extends="master.page">
+        <put-attribute name="body" value="/protected/streetgames/newGame.jsp"/>
+    </definition>
 
     <definition name="login" extends="master.page">
         <put-attribute name="header" value=""/>

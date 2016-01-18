@@ -1,4 +1,16 @@
-function streetGamesController($scope, $http) {
+App.controller("streetGamesController", function($scope, $http){
+
+    $scope.activeGame = -1;
+    $scope.clickOnGame = function( value ) {
+        if ($scope.activeGame == value)
+            $scope.activeGame = -1;
+        else
+            $scope.activeGame = value;
+    }
+    $scope.shouldBeVisible = function(id) {
+        return $scope.activeGame == id;
+    }
+
 
     $scope.url = "/streetChase/protected/streetGames/";
 
@@ -17,16 +29,31 @@ function streetGamesController($scope, $http) {
     }
 
     $scope.populateTable = function (data) {
-        if (data.size() > 0) {
+        if (data.length > 0) {
             $scope.state = 'list';
 
-            $scope.page = {source: data};
+            $scope.page = {source: formatList(data)};
 
             $scope.displayCreateContactButton = true;
         } else {
             $scope.state = 'noresult';
             $scope.displayCreateContactButton = true;
         }
+    }
+
+    function formatList(data) {
+        for (i = 0; i < data.length; ++i) {
+            data[i].startTime = formatDate(new Date(data[i].startTime));
+            data[i].endTime = formatDate(new Date(data[i].endTime));
+        }
+        return data;
+    }
+
+    function formatDate(date) {
+        return      date.getDay()
+                + "." + (date.getMonth() < 9 ? "0" : "") + (date.getMonth()+1)
+                + "." + date.getFullYear()
+                + " " + date.getHours() + ":" + date.getMinutes();
     }
 
     $scope.exit = function (modalId) {
@@ -189,4 +216,4 @@ function streetGamesController($scope, $http) {
     };
 
     $scope.getGamesList();
-}
+});

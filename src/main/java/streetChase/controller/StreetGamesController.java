@@ -25,9 +25,12 @@ public class StreetGamesController {
     private StreetGameService streetGameService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView welcome() {
+    public ModelAndView gamesList() {
         return new ModelAndView("streetGamesList");
     }
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public ModelAndView newGame() { return new ModelAndView("streetGamesAdd");   }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> listAll(Locale locale) {

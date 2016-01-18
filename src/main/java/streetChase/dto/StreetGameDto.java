@@ -3,7 +3,7 @@ package streetChase.dto;
 
 import streetChase.model.StreetGame;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class StreetGameDto {
@@ -12,19 +12,25 @@ public class StreetGameDto {
     private String name;
     private String description;
     private boolean isPrivate;
-    private Timestamp startTime;
-    private Timestamp endTime;
+    private Date startTime;
+    private Date endTime;
     private String startPointDesc;
     private List<PointDto> route;
 
     public StreetGameDto(StreetGame game) {
+        if (game == null)
+            return;
+
         this.id = game.getId();
         this.name = game.getName();
         this.description = game.getDescription();
         this.isPrivate = game.is_private();
-        this.startTime = game.getStart_time();
-        this.endTime = game.getEnd_time();
         this.startPointDesc = game.getStart_point_description();
+
+        if (game.getStart_time() != null)
+            this.startTime = new Date(game.getStart_time().getTime());
+        if (game.getEnd_time() != null)
+            this.endTime = new Date(game.getStart_time().getTime());
     }
 
     public int getId() {
@@ -59,19 +65,19 @@ public class StreetGameDto {
         isPrivate = aPrivate;
     }
 
-    public Timestamp getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public Timestamp getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
