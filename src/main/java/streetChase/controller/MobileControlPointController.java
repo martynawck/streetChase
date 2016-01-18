@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import streetChase.repository.ControlPointRepository;
 import streetChase.utils.GeometryUtil;
 import streetChase.model.ControlPoint;
 import streetChase.service.ControlPointService;
@@ -28,8 +29,8 @@ public class MobileControlPointController {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 "applicationContext.xml");
 
-        ControlPointService repository = context.getBean(ControlPointService.class);
-        ControlPoint controlPoint = repository.findById(id);//findOne(location_id);//repository.save(userLocation);
+        ControlPointRepository repository = context.getBean(ControlPointRepository.class);
+        ControlPoint controlPoint = repository.findOne(id);//findOne(location_id);//repository.save(userLocation);
 
         context.close();
 
@@ -51,8 +52,8 @@ public class MobileControlPointController {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 "applicationContext.xml");
 
-        ControlPointService repository = context.getBean(ControlPointService.class);
-        ControlPoint controlPoint = repository.findInitialForGame(gameId);//findOne(location_id);//repository.save(userLocation);
+        ControlPointRepository repository = context.getBean(ControlPointRepository.class);
+        ControlPoint controlPoint = repository.findGameStartingPoint(gameId);//findOne(location_id);//repository.save(userLocation);
 
         context.close();
 

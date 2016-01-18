@@ -38,6 +38,9 @@ public class StreetGameService {
     public void deleteStreetGame(StreetGame game) { streetGameRepository.delete(game); }
 
     @Transactional
+    public List<StreetGame> findByIdAndCurrentTime (int id) { return streetGameRepository.findByIdAndCurrentTime(id); }
+
+    @Transactional
     public boolean save(StreetGameDto gameDto, int creatorId) {
         if (gameDto.getId() == 0) {
             streetGameRepository.save(new StreetGame(gameDto, creatorId));
