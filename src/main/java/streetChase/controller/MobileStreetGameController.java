@@ -11,6 +11,7 @@ import streetChase.service.LoginService;
 import streetChase.service.StreetGameService;
 import streetChase.service.SubscriptionService;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,24 +45,49 @@ public class MobileStreetGameController {
     public ResponseEntity<List<StreetGame>> findCreatedGames(@PathVariable("id") int id) {
 
         List<StreetGame> streetGames = sgService.findByCreator(id);
+        List<StreetGame> currentGames = new ArrayList<StreetGame>();
+
+     /*   java.util.Date date= new java.util.Date();
+        Timestamp now = new Timestamp(date.getTime());
+
+        for (StreetGame sg: streetGames) {
+            if (now.before(sg.getEnd_time())) {
+                currentGames.add(sg);
+            }
+        }
+*/
         return new ResponseEntity<List<StreetGame>>(streetGames, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/takingpartingames/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<StreetGame>> findGamesForParticipation(@PathVariable("id") int id) {
+
+        java.util.Date date= new java.util.Date();
+        Timestamp now = new Timestamp(date.getTime());
 
         List<StreetGame> games = new ArrayList<StreetGame>();
         List<Subscription> subscriptions = subService.findByUser(id);
         for (Subscription s : subscriptions) {
             games.add(sgService.findById(s.getGame()));
         }
-        return new ResponseEntity<List<StreetGame>>(games, HttpStatus.OK);
+
+        List<StreetGame> currentGames = new ArrayList<StreetGame>();
+
+        for (StreetGame sg: games) {
+            if (now.before(sg.getEnd_time())) {
+                currentGames.add(sg);
+            }
+        }
+
+        return new ResponseEntity<List<StreetGame>>(currentGames, HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/othergames/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<StreetGame>> findOtherGames(@PathVariable("id") int id) {
+
+        java.util.Date date= new java.util.Date();
+        Timestamp now = new Timestamp(date.getTime());
 
         List<StreetGame> games = new ArrayList<StreetGame>();
         List<Subscription> subscriptions = subService.findByUser(id);
@@ -103,7 +129,15 @@ public class MobileStreetGameController {
 
         }
 
-        return new ResponseEntity<List<StreetGame>>(otherGames2, HttpStatus.OK);
+        List<StreetGame> currentGames = new ArrayList<StreetGame>();
+
+        for (StreetGame sg: otherGames2) {
+            if (now.before(sg.getEnd_time())) {
+                currentGames.add(sg);
+            }
+        }
+
+        return new ResponseEntity<List<StreetGame>>(currentGames, HttpStatus.OK);
     }
 
 

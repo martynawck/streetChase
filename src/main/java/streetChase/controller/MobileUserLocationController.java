@@ -38,7 +38,7 @@ public class MobileUserLocationController {
 
     @RequestMapping(value = "/user_location", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<Void> saveUserLocation(@RequestParam(value="id") int user_id, @RequestParam(value="timestamp") long timestamp, @RequestParam(value="game") int game,
-                                                 @RequestParam(value="y") String y, @RequestParam(value="x") int x) {
+                                                 @RequestParam(value="y") String y, @RequestParam(value="x") String x) {
 
         String point = "POINT("+x+" "+y+")";
         GeometryUtil geometryUtil = new GeometryUtil();
