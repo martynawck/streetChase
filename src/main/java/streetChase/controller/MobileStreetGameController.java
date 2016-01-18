@@ -47,7 +47,7 @@ public class MobileStreetGameController {
         List<StreetGame> streetGames = sgService.findByCreator(id);
         List<StreetGame> currentGames = new ArrayList<StreetGame>();
 
-     /*   java.util.Date date= new java.util.Date();
+        java.util.Date date= new java.util.Date();
         Timestamp now = new Timestamp(date.getTime());
 
         for (StreetGame sg: streetGames) {
@@ -55,8 +55,8 @@ public class MobileStreetGameController {
                 currentGames.add(sg);
             }
         }
-*/
-        return new ResponseEntity<List<StreetGame>>(streetGames, HttpStatus.OK);
+
+        return new ResponseEntity<List<StreetGame>>(currentGames, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/takingpartingames/{id}", method = RequestMethod.GET, produces = "application/json")
