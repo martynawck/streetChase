@@ -37,8 +37,8 @@ public class StreetGamesController {
         return createGamesListResponse();
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<?> create(@ModelAttribute("streetGame") StreetGameDto gameDto, Locale locale) {
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<?> create(@ModelAttribute("game") StreetGameDto gameDto, Locale locale) {
         if (!streetGameService.save(gameDto, getUserId())) {
             return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
         }

@@ -84,7 +84,15 @@ App.directive('myMap', function() {
     };
 });
 
+function getDateObject(dateString) {
+    var date = new Date(dateString);
+    date.setTime(date.getTime() - 60*60*1000);
+    return date;
+}
+
 App.controller("newGameController", function($scope, $http){
+    $scope.url = "/streetChase/protected/streetGames/add";
+
     $scope.activeTab = 0;
     $scope.page = {points : []}
 
@@ -99,5 +107,42 @@ App.controller("newGameController", function($scope, $http){
     $scope.isActiveTab = function(id) {
         return $scope.activeTab == id;
     }
+
+    $scope.getRoute = function(){
+        var route = [];
+        for (i = 0; i < $scope.page.points.length; ++i) {
+            var p = $scope.page.points[i];
+            route.push({
+                name: p.address,
+                lat: p.latLon.lat(),
+                lon: p.latLon.lng(),
+                hint: p.hint,
+                question: p.question,
+                answer: p.answer
+            });
+        }
+        return route;
+    }
+
+    $scope.createGame = function() {
+        var game = $scope.game;
+        game.startTime = getDateObject(game.startTime);
+        game.endTime = getDateObject(game.endTime);
+        game.startPointDesc = $scope.page.points[0].address;
+        game.route = $scope.getRoute();
+
+        // wyślij http
+        // przekieruj na listę gier
+
+        var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}};
+        $http.post(url, $.param(game), config)
+            .success(function (data) {
+                $scope.gameCreateSuccess(data, null, false);
+            })
+            .error(function () {
+                // todo
+            });
+    }
+
 });
 

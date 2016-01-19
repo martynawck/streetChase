@@ -19,6 +19,9 @@ public class StreetGameService {
     @Resource
     private StreetGameRepository streetGameRepository;
 
+    @Resource
+    private ControlPointService controlPointService;
+
     @Transactional
     public List findAll() {
         return streetGameRepository.findAll();
@@ -42,8 +45,11 @@ public class StreetGameService {
 
     @Transactional
     public boolean save(StreetGameDto gameDto, int creatorId) {
+        if (gameDto == null || gameDto.getRoute() == null)
+            return false;
         if (gameDto.getId() == 0) {
-            streetGameRepository.save(new StreetGame(gameDto, creatorId));
+            int gameId = streetGameRepository.save(new StreetGame(gameDto, creatorId)).getId();
+            controlPointService.saveRoute(gameDto.getRoute(), gameId);
             return true;
         }
 

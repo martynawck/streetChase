@@ -13,6 +13,18 @@ import java.util.Date;
  */
 public class GeometryUtil {
 
+    public static Point getPointFromStrings(String lat, String lon) {
+        String point = "POINT(" + lat + " " + lon + ")";
+        GeometryUtil geometryUtil = new GeometryUtil();
+        Geometry geom = geometryUtil.wktToGeometry(point);
+
+        if (!geom.getGeometryType().equals("Point")) {
+            throw new RuntimeException("Geometry must be a point. Got a " + geom.getGeometryType());
+        }
+
+        return (Point) geom;
+    }
+
     public static Geometry wktToGeometry(String wktPoint) {
         WKTReader fromText = new WKTReader();
         Geometry geom = null;

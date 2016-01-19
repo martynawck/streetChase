@@ -61,6 +61,8 @@
                         <label>Koniec</label>
                         <input type="datetime-local" ng-model="game.endTime" class="form-control"
                                placeholder="yyyy-MM-ddTHH:mm:ss" min="2001-01-01T00:00:00" max="2017-12-31T00:00:00"/><br/>
+
+                        <button class="btn btn-primary btn-block" ng-click="createGame()">Stwórz grę</button>
                     </div>
                 </form>
             </div>

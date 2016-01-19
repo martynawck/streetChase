@@ -51,6 +51,12 @@ public class Question {
 
     public Question() {}
 
+    public Question(String question, String answer, int controlPoint) {
+        this.question = question;
+        this.answer = answer;
+        this.controlPoint = controlPoint;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (object instanceof Question){
