@@ -1,12 +1,12 @@
 package streetChase.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import streetChase.dto.StreetGameDto;
 import streetChase.model.StreetGame;
 import streetChase.repository.StreetGameRepository;
+import streetChase.repository.UserRepository;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -21,6 +21,9 @@ public class StreetGameService {
 
     @Resource
     private ControlPointService controlPointService;
+
+    @Resource
+    private UserRepository userRepository;
 
     @Transactional
     public List findAll() {
@@ -43,13 +46,15 @@ public class StreetGameService {
     @Transactional
     public List<StreetGame> findByIdAndCurrentTime (int id) { return streetGameRepository.findByIdAndCurrentTime(id); }
 
-    @Transactional
-    public boolean save(StreetGameDto gameDto, int creatorId) {
+    public boolean save(StreetGameDto gameDto, String creatorEmail) {
         if (gameDto == null || gameDto.getRoute() == null)
             return false;
+
+        int creatorId = userRepository.findByEmail(creatorEmail).getId();
+
         if (gameDto.getId() == 0) {
             int gameId = streetGameRepository.save(new StreetGame(gameDto, creatorId)).getId();
-            controlPointService.saveRoute(gameDto.getRouteAsList(), gameId);
+            controlPointService.saveRoute(gameDto.routeAsList(), gameId);
             return true;
         }
 
@@ -68,7 +73,8 @@ public class StreetGameService {
     }
 
     @Transactional(readOnly = true)
-    public List<StreetGameDto> findDtoListForCreator(int creatorId) {
+    public List<StreetGameDto> findDtoListForCreator(String creatorEmail) {
+        int creatorId = userRepository.findByEmail(creatorEmail).getId();
         Iterable<StreetGame> gamesList = streetGameRepository.findByCreatorId(creatorId);
         List<StreetGameDto> resultList = new ArrayList<StreetGameDto>();
         for (StreetGame s : gamesList) {

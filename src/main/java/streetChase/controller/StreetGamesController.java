@@ -7,11 +7,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import streetChase.dto.StreetGameDto;
-import streetChase.model.User;
 import streetChase.service.StreetGameService;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class StreetGamesController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<?> create( @RequestBody StreetGameDto streetGame, Locale locale) {
-        if (!streetGameService.save(streetGame, getUserId())) {
+        if (!streetGameService.save(streetGame, getUserEmail())) {
             return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<String>("OK", HttpStatus.CREATED);
@@ -51,11 +51,11 @@ public class StreetGamesController {
     public ResponseEntity<?> update(@PathVariable("id") int gameId,
                                     @RequestBody StreetGameDto gameDto,
                                     Locale locale) {
-        if (gameId != gameDto.getId() || !streetGameService.save(gameDto, getUserId())) {
+        if (gameId != gameDto.getId() || !streetGameService.save(gameDto, getUserEmail())) {
             return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
         }
 
-        streetGameService.save(gameDto, getUserId());
+        streetGameService.save(gameDto, getUserEmail());
 
         return createGamesListResponse();
     }
@@ -71,8 +71,8 @@ public class StreetGamesController {
         return createGamesListResponse();
     }
 
-    private int getUserId() {
-        return ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+    private String getUserEmail() {
+        return ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
     }
 
     private ResponseEntity<List<StreetGameDto>> createGamesListResponse() {
@@ -80,7 +80,7 @@ public class StreetGamesController {
         if (isAdmin()) {
             list = streetGameService.findAllAsDtos();
         } else {
-            list = streetGameService.findDtoListForCreator(getUserId());
+            list = streetGameService.findDtoListForCreator(getUserEmail());
         }
 
         return new ResponseEntity< List<StreetGameDto> >(list, HttpStatus.OK);

@@ -53,7 +53,8 @@ App.controller("streetGamesController", function($scope, $http){
         return      date.getDay()
                 + "." + (date.getMonth() < 9 ? "0" : "") + (date.getMonth()+1)
                 + "." + date.getFullYear()
-                + " " + date.getHours() + ":" + date.getMinutes();
+                + " " + (date.getHours() < 10 ? "0" : "") + date.getHours()
+                + ":" + (date.getHours() < 10 ? "0" : "") + date.getMinutes();
     }
 
     $scope.exit = function (modalId) {

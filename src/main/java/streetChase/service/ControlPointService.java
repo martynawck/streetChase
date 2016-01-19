@@ -2,6 +2,7 @@ package streetChase.service;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import streetChase.dto.PointDto;
@@ -10,6 +11,7 @@ import streetChase.model.ControlPoint;
 import streetChase.model.Question;
 import streetChase.repository.ControlPointRepository;
 import streetChase.repository.QuestionRepository;
+import streetChase.repository.UserLocationRepository;
 import streetChase.utils.GeometryUtil;
 
 import javax.annotation.Resource;
@@ -43,7 +45,7 @@ public class ControlPointService {
             PointDto dto = route.get(i);
             Point p = GeometryUtil.getPointFromStrings(dto.getLat(), dto.getLon());
             ControlPoint c = new ControlPoint(gameId, dto.getName(), pointId, p, (i == 0), dto.getHint());
-            pointId = controlPointRepository.save(c).getId();
+            pointId = saveControlPoint(c);
 
             questionRepository.save(new Question(dto.getQuestion(), dto.getAnswer(), pointId));
         }
@@ -55,5 +57,16 @@ public class ControlPointService {
 
     }
 
+    private int saveControlPoint(ControlPoint controlPoint) {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                "applicationContext.xml");
+
+        ControlPointRepository repository = context.getBean(ControlPointRepository.class);
+        int id = repository.save(controlPoint).getId();
+
+        context.close();
+
+        return id;
+    }
 
 }

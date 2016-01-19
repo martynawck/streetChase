@@ -93,7 +93,7 @@ public class StreetGameDto {
         this.route = route;
     }
 
-    public List<PointDto> getRouteAsList() {
+    public List<PointDto> routeAsList() {
         return Arrays.asList(route);
     }
 
