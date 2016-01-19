@@ -15,4 +15,14 @@ public interface SubscriptionRepository extends CrudRepository<Subscription, Int
             "select t from Subscription t where t.game = :game and t.user = :user";
     @Query(FIND_BY_GAME_AND_USER)
     public Subscription findByUserAndGame(@Param("user") int user, @Param("game") int game);
+
+    public final static String FIND_BY_USER_PLAYED =
+            "select t from Subscription t where t.played = TRUE and t.user = :user";
+    @Query(FIND_BY_USER_PLAYED)
+    public List<Subscription> findByUserPlayed(@Param("user") int user);
+
+    public final static String FIND_BY_USER_NOT_PLAYED =
+            "select t from Subscription t where t.played = FALSE and t.user = :user";
+    @Query(FIND_BY_USER_NOT_PLAYED)
+    public List<Subscription> findByUserNotPlayed(@Param("user") int user);
 }

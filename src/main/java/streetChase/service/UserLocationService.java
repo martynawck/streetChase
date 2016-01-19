@@ -32,4 +32,10 @@ public class UserLocationService {
         userLocationRepository.save(s);
     }
 
+    @Transactional
+    public void deleteByGameAndUser(int user_id, int game_id) {
+
+        userLocationRepository.deleteAllByUserAndGame(user_id, game_id);//ave(s);
+    }
+
 }

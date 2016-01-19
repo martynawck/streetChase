@@ -6,6 +6,7 @@ import streetChase.model.ControlPoint;
 import streetChase.repository.ControlPointRepository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class ControlPointService {
@@ -21,6 +22,12 @@ public class ControlPointService {
     @Transactional
     public ControlPoint findById(int id) {
         return controlPointRepository.findOne(id);
+
+    }
+
+    @Transactional
+    public List<ControlPoint> findByGameId(int id) {
+        return controlPointRepository.findByGameId(id);
 
     }
 

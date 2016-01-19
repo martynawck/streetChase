@@ -5,6 +5,7 @@ package streetChase.model;
 import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Type;
 
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -26,7 +27,15 @@ public class ControlPoint {
     @Type(type = "org.hibernate.spatial.GeometryType")
     private Point location;
     private boolean starting_point;
+    private String hint;
 
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
+    }
 
     public int getNext_point_id() {
         return next_point_id;
