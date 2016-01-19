@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<div class="navbar navbar-app navbar-absolute-top">
-    <div class="navbar-brand navbar-brand-center"><span>StreetChase</span></div>
-</div>
+
+
 <div class="app-body">
     <div class="app-content" ng-controller="loginController">
         <div class="scrollable scrollable-content section">

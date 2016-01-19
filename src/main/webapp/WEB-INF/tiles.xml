@@ -5,6 +5,7 @@
 
     <!-- Master -->
     <definition name="master.page" template="/public/template/master.jsp">
+        <put-attribute name="menu" value="/public/template/menu.jsp"/>
         <put-attribute name="header" value="/public/template/header.jsp"/>
         <put-attribute name="footer" value="/public/template/footer.jsp"/>
     </definition>
@@ -21,8 +22,8 @@
     </definition>
 
     <definition name="login" extends="master.page">
-        <put-attribute name="header" value=""/>
-        <put-attribute name="footer" value=""/>
+        <!--<put-attribute name="menu" value=""/>-->
+        <!--<put-attribute name="footer" value=""/>-->
         <put-attribute name="body" value="/public/login.jsp"/>
     </definition>
 </tiles-definitions>

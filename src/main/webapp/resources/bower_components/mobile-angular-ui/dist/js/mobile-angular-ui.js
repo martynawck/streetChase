@@ -3519,7 +3519,8 @@ By default sidebar are closed by clicking/tapping outside them.
    * @param {expression} [ngChange] An expression to be evaluated when model changes.
    */
   .directive('uiSwitch', ['$injector', function($injector) {
-    var $drag = $injector.has('$drag') && $injector.get('$drag');
+    var $drag = $injector.get('$drag');
+	  //var $drag = $injector.has('$drag') && $injector.get('$drag');
 
     return {
       restrict: 'EA',
