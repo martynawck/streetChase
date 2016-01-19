@@ -4,11 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
-<div class="navbar navbar-app navbar-absolute-top">
-    <div class="navbar-brand navbar-brand-center"><span>StreetChase</span></div>
-    <div class="btn-group pull-left"><div class="btn">Dodaj nowa</div></div>
-    <div class="btn-group pull-right"><div class="btn">Wyloguj</div></div>
-</div>
+
 <div class="app-body">
     <div class="app-content" ng-controller="streetGamesController">
 
