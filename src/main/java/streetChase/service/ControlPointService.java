@@ -42,7 +42,7 @@ public class ControlPointService {
         for (int i = route.size()-1; i >= 0; --i) {
             PointDto dto = route.get(i);
             Point p = GeometryUtil.getPointFromStrings(dto.getLat(), dto.getLon());
-            ControlPoint c = new ControlPoint(gameId, dto.getName(), pointId, p, (i == 0));
+            ControlPoint c = new ControlPoint(gameId, dto.getName(), pointId, p, (i == 0), dto.getHint());
             pointId = controlPointRepository.save(c).getId();
 
             questionRepository.save(new Question(dto.getQuestion(), dto.getAnswer(), pointId));
