@@ -3,6 +3,8 @@ package streetChase.dto;
 
 import streetChase.model.StreetGame;
 
+import java.awt.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -11,11 +13,11 @@ public class StreetGameDto {
     private int id;
     private String name;
     private String description;
-    private boolean isPrivate;
+    private boolean privateGame;
     private Date startTime;
     private Date endTime;
     private String startPointDesc;
-    private List<PointDto> route;
+    private PointDto[] route;
 
     public StreetGameDto() { }
 
@@ -26,7 +28,7 @@ public class StreetGameDto {
         this.id = game.getId();
         this.name = game.getName();
         this.description = game.getDescription();
-        this.isPrivate = game.is_private();
+        this.privateGame = game.is_private();
         this.startPointDesc = game.getStart_point_description();
 
         if (game.getStart_time() != null)
@@ -59,12 +61,12 @@ public class StreetGameDto {
         this.description = description;
     }
 
-    public boolean isPrivate() {
-        return isPrivate;
+    public boolean isPrivateGame() {
+        return privateGame;
     }
 
-    public void setPrivate(boolean aPrivate) {
-        isPrivate = aPrivate;
+    public void setPrivateGame(boolean privateGame) {
+        this.privateGame = privateGame;
     }
 
     public Date getStartTime() {
@@ -83,12 +85,16 @@ public class StreetGameDto {
         this.endTime = endTime;
     }
 
-    public List<PointDto> getRoute() {
+    public PointDto[] getRoute() {
         return route;
     }
 
-    public void setRoute(List<PointDto> route) {
+    public void setRoute(PointDto[] route) {
         this.route = route;
+    }
+
+    public List<PointDto> getRouteAsList() {
+        return Arrays.asList(route);
     }
 
     public String getStartPointDesc() {

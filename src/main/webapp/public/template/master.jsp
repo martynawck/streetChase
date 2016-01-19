@@ -6,6 +6,12 @@
 <%--<html>--%>
     <head>
         <title><spring:message code="project.title"/></title>
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="yes" />
+
         <link href="<c:url value='/resources/bower_components/mobile-angular-ui/dist/css/mobile-angular-ui-base.min.css'  />"
               rel="stylesheet"/>
         <link href="<c:url value='/resources/bower_components/mobile-angular-ui/dist/css/mobile-angular-ui-desktop.min.css'  />"
@@ -18,7 +24,6 @@
         <script src="<c:url value='/resources/js/angular.min.js' />"></script>
         <script src="<c:url value='/resources/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.js' />"></script>
         <script src="<c:url value='/resources/bower_components/mobile-angular-ui/dist/js/mobile-angular-ui.gestures.min.js' />"></script>
-        <script src="<c:url value='/resources/bower_components/angular-native-datepicker/build/angular-datepicker.js' />"></script>
 
         <script src='//maps.googleapis.com/maps/api/js?key=AIzaSyA4AevpY6ENySQOgqadisjnYbZKYf4yybE'></script>
         <script src="<c:url value='/resources/bower_components/lodash/dist/lodash.js' />"></script>

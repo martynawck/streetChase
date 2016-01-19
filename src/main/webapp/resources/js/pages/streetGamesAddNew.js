@@ -91,6 +91,7 @@ function getDateObject(dateString) {
 }
 
 App.controller("newGameController", function($scope, $http){
+    $scope.game = {}
     $scope.activeTab = 0;
     $scope.page = {points : []}
 
@@ -122,18 +123,20 @@ App.controller("newGameController", function($scope, $http){
         return route;
     }
 
-    $scope.streetGame = {};
 
     $scope.createGame = function() {
-        $scope.streetGame = $scope.game;
-        //game.startTime = getDateObject(game.startTime);
-        //game.endTime = getDateObject(game.endTime);
-        //game.startPointDesc = $scope.page.points[0].address;
-        //game.route = $scope.getRoute();
+        var data = {
+            name: $scope.game.name,
+            description: $scope.game.description,
+            privateGame: $scope.game.isPrivate,
+            startTime: getDateObject($scope.game.startTime),
+            endTime: getDateObject($scope.game.endTime),
+            startPointDesc: $scope.page.points[0].address,
+            route: $scope.getRoute()
+        };
 
         var url = "/streetChase/protected/streetGames/add";
-        //var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}};
-        $http.post(url, $.param($scope.streetGame) /*, config*/)
+        $http.post(url,  data)
             .success(function (data) {
                 $scope.gameCreateSuccess();
             })

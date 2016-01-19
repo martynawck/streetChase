@@ -14,6 +14,7 @@ import streetChase.dto.StreetGameDto;
 import streetChase.model.User;
 import streetChase.service.StreetGameService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,13 +38,12 @@ public class StreetGamesController {
         return createGamesListResponse();
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
-    public ResponseEntity<?> create(@ModelAttribute("streetGame") StreetGameDto streetGame, Locale locale) {
-//        if (!streetGameService.save(streetGameDto, getUserId())) {
-//            return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
-//        }
-//        return new ResponseEntity<String>("OK", HttpStatus.CREATED);
-        return new ResponseEntity<String>("tipot", HttpStatus.I_AM_A_TEAPOT);
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<?> create( @RequestBody StreetGameDto streetGame, Locale locale) {
+        if (!streetGameService.save(streetGame, getUserId())) {
+            return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<String>("OK", HttpStatus.CREATED);
     }
 
 

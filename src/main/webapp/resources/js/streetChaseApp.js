@@ -1,4 +1,4 @@
-var App = angular.module('streetChaseApp',['mobile-angular-ui', 'mobile-angular-ui.gestures', 'angular-datepicker', 'uiGmapgoogle-maps']);
+var App = angular.module('streetChaseApp',['mobile-angular-ui', 'mobile-angular-ui.gestures', 'uiGmapgoogle-maps']);
 
 //App.controller("GlobalController", function($scope, $location){
 //    if($location.$$absUrl.lastIndexOf('/protected') > 0)

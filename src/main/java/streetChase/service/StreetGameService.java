@@ -49,7 +49,7 @@ public class StreetGameService {
             return false;
         if (gameDto.getId() == 0) {
             int gameId = streetGameRepository.save(new StreetGame(gameDto, creatorId)).getId();
-            controlPointService.saveRoute(gameDto.getRoute(), gameId);
+            controlPointService.saveRoute(gameDto.getRouteAsList(), gameId);
             return true;
         }
 

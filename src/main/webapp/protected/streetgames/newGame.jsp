@@ -29,14 +29,11 @@
             <div ng-show="isActiveTab(1)">
                 <br/>
                 <div ng-repeat="(i, point) in page.points">
-                    <h4>{{point.address}}</h4>
                     <form method="post" action="j_spring_security_check">
                         <div class="form-group">
-                            <label>Wskazówka</label>
+                            <label>{{point.address}}</label>
                             <input type="text" ng-model="point.hint" class="form-control" placeholder="Wskazówka"><br/>
-                            <label>Pytanie</label>
                             <input type="text" ng-model="point.question" class="form-control" placeholder="Pytanie"><br/>
-                            <label>Odpowiedź</label>
                             <input type="text" ng-model="point.answer" class="form-control" placeholder="Odpowiedź"><br/>
                         </div>
                     </form>
