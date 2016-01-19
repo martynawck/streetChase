@@ -82,7 +82,7 @@ public class MobileUserLocationController {
         jsonObject.put("id", userLocation.getId());
         jsonObject.put("location", geometryUtil.wktFromGeometry(userLocation.getLocation()));
         jsonObject.put("timestamp", userLocation.getTimestamp());
-        jsonObject.put("user_id",userLocation.getUser_id());
+        jsonObject.put("user_id", userLocation.getUser_id());
         jsonObject.put("street_game_id", userLocation.getStreet_game_id());
         //  jsonObject.put("")
 

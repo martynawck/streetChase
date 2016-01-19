@@ -6,6 +6,7 @@ import streetChase.model.Subscription;
 import streetChase.repository.SubscriptionRepository;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -22,6 +23,16 @@ public class SubscriptionService {
     @Transactional
     public List findByGame(int id) {
         return subRepository.findByGame(id);
+    }
+
+    @Transactional
+    public List findByUserPlayed (int id) {
+        return subRepository.findByUserPlayed(id);
+    }
+
+    @Transactional
+    public List findByUserNotPlayed (int id) {
+        return subRepository.findByUserNotPlayed(id);
     }
 
     @Transactional
@@ -42,5 +53,33 @@ public class SubscriptionService {
     @Transactional
     public void createSubscription(Subscription s) {
         subRepository.save(s);//findByUserAndGame(user, game);//fi.fin(id);
+    }
+
+    @Transactional
+    public void setGamePlayed(int user, int game) {
+        Subscription subscription = subRepository.findByUserAndGame(user, game);
+        subscription.setPlayed(true);
+        subRepository.save(subscription);//findByUserAndGame(user, game);//fi.fin(id);
+    }
+
+    @Transactional
+    public void setGameUnPlayed(int user, int game) {
+        Subscription subscription = subRepository.findByUserAndGame(user, game);
+        subscription.setPlayed(false);
+        subRepository.save(subscription);//findByUserAndGame(user, game);//fi.fin(id);
+    }
+
+    @Transactional
+    public void setStartTime(int user, int game, long timestamp) {
+        Subscription subscription = subRepository.findByUserAndGame(user, game);
+        subscription.setGame_started(new Timestamp(timestamp));
+        subRepository.save(subscription);//findByUserAndGame(user, game);//fi.fin(id);
+    }
+
+    @Transactional
+    public void setEndTime(int user, int game, long timestamp) {
+        Subscription subscription = subRepository.findByUserAndGame(user, game);
+        subscription.setGame_finished(new Timestamp(timestamp));
+        subRepository.save(subscription);//findByUserAndGame(user, game);//fi.fin(id);
     }
 }

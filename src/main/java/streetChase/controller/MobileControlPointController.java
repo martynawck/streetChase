@@ -41,6 +41,7 @@ public class MobileControlPointController {
         jsonObject.put("name", controlPoint.getName());
         jsonObject.put("next_point_id", controlPoint.getNext_point_id());
         jsonObject.put("street_game_id", controlPoint.getStreet_game_id());
+        jsonObject.put("hint", controlPoint.getHint());
         //  jsonObject.put("")
 
         return new ResponseEntity<JSONObject>(jsonObject, HttpStatus.OK);

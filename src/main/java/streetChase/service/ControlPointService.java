@@ -49,5 +49,11 @@ public class ControlPointService {
         }
     }
 
+    @Transactional
+    public List<ControlPoint> findByGameId(int id) {
+        return controlPointRepository.findByGameId(id);
+
+    }
+
 
 }

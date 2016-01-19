@@ -17,4 +17,14 @@ public class UserReachedPointService {
     public void addReachedPoint(UserReachedPoint s) {
           userReachedPointRepository.save(s);
     }
+    @Transactional
+    public UserReachedPoint findByControlPointAndUser(int user, int controlPoint) {
+        return userReachedPointRepository.findByControlPointAndUser(user, controlPoint);//.save(s);
+    }
+
+    @Transactional
+    public void deleteUserReachedPoint(UserReachedPoint userReachedPoint) {
+        userReachedPointRepository.delete(userReachedPoint);//.findByControlPointAndUser(user, controlPoint);//.save(s);
+    }
+
 }

@@ -2,10 +2,8 @@ package streetChase.model;
 
 
 
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import org.hibernate.annotations.Type;
-import streetChase.dto.PointDto;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,13 +26,23 @@ public class ControlPoint {
     @Type(type = "org.hibernate.spatial.GeometryType")
     private Point location;
     private boolean starting_point;
+    private String hint;
 
-    public ControlPoint(int street_game_id, String name, int next_point_id, Point location, boolean starting_point) {
+    public ControlPoint(int street_game_id, String name, int next_point_id, Point location, boolean starting_point, String hint) {
         this.street_game_id = street_game_id;
         this.name = name;
         this.next_point_id = next_point_id;
         this.location = location;
         this.starting_point = starting_point;
+        this.hint = hint;
+    }
+
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
     }
 
     public int getNext_point_id() {

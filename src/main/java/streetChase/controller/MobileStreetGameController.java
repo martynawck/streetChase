@@ -1,15 +1,17 @@
 package streetChase.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import streetChase.model.ControlPoint;
 import streetChase.model.StreetGame;
 import streetChase.model.Subscription;
-import streetChase.service.LoginService;
-import streetChase.service.StreetGameService;
-import streetChase.service.SubscriptionService;
+import streetChase.model.UserReachedPoint;
+import streetChase.repository.ControlPointRepository;
+import streetChase.service.*;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -24,6 +26,15 @@ public class MobileStreetGameController {
 
     @Autowired
     private SubscriptionService subService;
+
+    @Autowired
+    private UserLocationService userLocationService;
+
+    @Autowired
+    private ControlPointService controlPointService;
+
+    @Autowired
+    private UserReachedPointService userReachedPointService;
 
     @RequestMapping(value="/list", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<StreetGame>> getAllGames() {
@@ -66,7 +77,7 @@ public class MobileStreetGameController {
         Timestamp now = new Timestamp(date.getTime());
 
         List<StreetGame> games = new ArrayList<StreetGame>();
-        List<Subscription> subscriptions = subService.findByUser(id);
+        List<Subscription> subscriptions = subService.findByUserNotPlayed(id);//findByUser(id);
         for (Subscription s : subscriptions) {
             games.add(sgService.findById(s.getGame()));
         }
@@ -82,6 +93,21 @@ public class MobileStreetGameController {
         return new ResponseEntity<List<StreetGame>>(currentGames, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/completed/{id}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<List<StreetGame>> findCompletedGames(@PathVariable("id") int id) {
+
+        java.util.Date date= new java.util.Date();
+        Timestamp now = new Timestamp(date.getTime());
+
+        List<StreetGame> games = new ArrayList<StreetGame>();
+        List<Subscription> subscriptions = subService.findByUserPlayed(id);
+        for (Subscription s : subscriptions) {
+            games.add(sgService.findById(s.getGame()));
+        }
+
+        return new ResponseEntity<List<StreetGame>>(games, HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/othergames/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<StreetGame>> findOtherGames(@PathVariable("id") int id) {
@@ -90,7 +116,10 @@ public class MobileStreetGameController {
         Timestamp now = new Timestamp(date.getTime());
 
         List<StreetGame> games = new ArrayList<StreetGame>();
-        List<Subscription> subscriptions = subService.findByUser(id);
+        List<Subscription> subscriptionsNotPlayed = subService.findByUserNotPlayed(id);
+        List<Subscription> subscriptionsPlayed = subService.findByUserPlayed(id);
+        List<Subscription> subscriptions = new ArrayList<Subscription>(subscriptionsNotPlayed);
+        subscriptions.addAll(subscriptionsPlayed);
         for (Subscription s : subscriptions) {
             games.add(sgService.findById(s.getGame()));
         }
@@ -155,7 +184,7 @@ public class MobileStreetGameController {
     @RequestMapping(value = "/subscription/{user}/{game}", method = RequestMethod.DELETE, produces = "application/json")
     public ResponseEntity<Subscription> delete(@PathVariable("user") int user, @PathVariable("game") int game) {
 
-        Subscription subscription = subService.findByUserAndGame(user,game);//.findById(id);
+        Subscription subscription = subService.findByUserAndGame(user, game);
         if (subscription == null) {
             return new ResponseEntity<Subscription>(HttpStatus.NOT_FOUND);
         }
@@ -164,18 +193,82 @@ public class MobileStreetGameController {
         return new ResponseEntity<Subscription>(HttpStatus.NO_CONTENT);
     }
 
+    @RequestMapping(value = "/subscription/{user}/{game}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<Subscription> get(@PathVariable("user") int user, @PathVariable("game") int game) {
+
+        Subscription subscription = subService.findByUserAndGame(user, game);
+        if (subscription == null) {
+            return new ResponseEntity<Subscription>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<Subscription>(subscription, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/subscription/{user}/{game}", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<Void> create(@PathVariable("user") int user, @PathVariable("game") int game) {
+     public ResponseEntity<Void> createSubscription(@PathVariable("user") int user, @PathVariable("game") int game) {
 
         Subscription subscription = new Subscription();
         subscription.setGame(game);
         subscription.setUser(user);
+        subscription.setPlayed(false);
 
         if (subService.findByUserAndGame(user,game) != null) {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
         subService.createSubscription(subscription);
         return new ResponseEntity<Void>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/subscription/played/{user}/{game}", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<Void> setPlayed(@PathVariable("user") int user, @PathVariable("game") int game) {
+
+        subService.setGamePlayed(user, game);
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/subscription/unplayed/{user}/{game}", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<Void> resetPlayed(@PathVariable("user") int user, @PathVariable("game") int game) {
+
+        subService.setGameUnPlayed(user, game);
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/subscription/played/start/{user}/{game}/{timestamp}", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<Void> setStartTime(@PathVariable("user") int user, @PathVariable("game") int game, @PathVariable("timestamp") long timestamp) {
+
+        subService.setStartTime(user, game, timestamp);
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/subscription/played/end/{user}/{game}/{timestamp}", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<Void> setEndTime(@PathVariable("user") int user, @PathVariable("game") int game, @PathVariable("timestamp") long timestamp) {
+
+        subService.setEndTime(user, game, timestamp);
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/subscription/played/rollback/{user}/{game}", method = RequestMethod.DELETE, produces = "application/json")
+    public ResponseEntity<Void> rollbackGamePlaying(@PathVariable("user") int user, @PathVariable("game") int game
+
+    ) {
+
+        userLocationService.deleteByGameAndUser(user,game);
+
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                "applicationContext.xml");
+
+        ControlPointRepository repository = context.getBean(ControlPointRepository.class);
+        List<ControlPoint> controlPoints = repository.findByGameId(game);//;//findOne(location_id);//repository.save(userLocation);
+
+        context.close();
+
+        for (ControlPoint p : controlPoints) {
+            UserReachedPoint userReachedPoint = userReachedPointService.findByControlPointAndUser(user, p.getId());
+            if (userReachedPoint != null)
+                userReachedPointService.deleteUserReachedPoint(userReachedPoint);
+        }
+
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
 }
