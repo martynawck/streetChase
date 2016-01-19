@@ -37,12 +37,13 @@ public class StreetGamesController {
         return createGamesListResponse();
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<?> create(@ModelAttribute("game") StreetGameDto gameDto, Locale locale) {
-        if (!streetGameService.save(gameDto, getUserId())) {
-            return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
-        }
-        return createGamesListResponse();
+    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
+    public ResponseEntity<?> create(@ModelAttribute("streetGame") StreetGameDto streetGame, Locale locale) {
+//        if (!streetGameService.save(streetGameDto, getUserId())) {
+//            return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
+//        }
+//        return new ResponseEntity<String>("OK", HttpStatus.CREATED);
+        return new ResponseEntity<String>("tipot", HttpStatus.I_AM_A_TEAPOT);
     }
 
 

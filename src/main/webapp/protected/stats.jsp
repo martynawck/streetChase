@@ -9,7 +9,7 @@
     <div class="app-content">
 
         <div class="scrollable scrollable-content section">
-            <spring:message code='welcomePage.description'/>
+            Statystyki
         </div>
     </div>
 </div>

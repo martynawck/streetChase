@@ -32,7 +32,6 @@ public class ControlPointService {
     @Transactional
     public ControlPoint findById(int id) {
         return controlPointRepository.findOne(id);
-
     }
 
     public void saveRoute(List<PointDto> route, int gameId) {

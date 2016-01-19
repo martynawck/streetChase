@@ -10,7 +10,7 @@
                 <a class="list-group-item" href="/streetChase/protected/streetGames">Lista gier<i class="fa fa-chevron-right pull-right"></i></a>
                 <a class="list-group-item" href="/streetChase/protected/streetGames/add">Stwórz grę <i
                         class="fa fa-chevron-right pull-right"></i></a>
-                <a class="list-group-item" href="/streetChase/protected/statistics">Statystyki <i class="fa fa-chevron-right pull-right"></i></a>
+                <a class="list-group-item" href="/streetChase/protected/stats">Statystyki <i class="fa fa-chevron-right pull-right"></i></a>
             </div>
         </div>
     </div>

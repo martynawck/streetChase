@@ -19,12 +19,11 @@ public class PointDto {
     public PointDto() { }
 
     public PointDto(ControlPoint point, Question question) {
-        // TODO
         this.id = point.getId();
         this.name = point.getName();
-        //this.location = point.getLocation();
         this.question = question.getQuestion();
         this.answer = question.getAnswer();
+        // TODO
     }
 
     public int getId() {

@@ -20,6 +20,9 @@
     <definition name="streetGamesAdd" extends="master.page">
         <put-attribute name="body" value="/protected/streetgames/newGame.jsp"/>
     </definition>
+    <definition name="stats" extends="master.page">
+        <put-attribute name="body" value="/protected/stats.jsp"/>
+    </definition>
 
     <definition name="login" extends="master.page">
         <!--<put-attribute name="menu" value=""/>-->

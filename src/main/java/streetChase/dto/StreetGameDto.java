@@ -17,6 +17,8 @@ public class StreetGameDto {
     private String startPointDesc;
     private List<PointDto> route;
 
+    public StreetGameDto() { }
+
     public StreetGameDto(StreetGame game) {
         if (game == null)
             return;

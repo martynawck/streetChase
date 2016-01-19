@@ -6,7 +6,17 @@ div.app, div.sidebar {
     color: #007aff;
 }
 
+body, html {
+    width: 100%;
+    height: 100%;
+}
+
+.stopro {
+    width: 100%;
+    height: 88%;
+}
+
 #gmaps {
     width: 100%;
-    height: 450px;
+    height: 100%;
 }

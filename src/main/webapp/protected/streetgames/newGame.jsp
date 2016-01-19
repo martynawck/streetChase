@@ -22,10 +22,8 @@
                 </li>
             </ul>
 
-            <div ng-show="isActiveTab(0)">
-                <div class="map-size">
+            <div class="stopro" ng-show="isActiveTab(0)">
                     <div my-map=""></div>
-                </div>
             </div>
 
             <div ng-show="isActiveTab(1)">

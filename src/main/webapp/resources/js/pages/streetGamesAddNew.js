@@ -91,8 +91,6 @@ function getDateObject(dateString) {
 }
 
 App.controller("newGameController", function($scope, $http){
-    $scope.url = "/streetChase/protected/streetGames/add";
-
     $scope.activeTab = 0;
     $scope.page = {points : []}
 
@@ -124,24 +122,28 @@ App.controller("newGameController", function($scope, $http){
         return route;
     }
 
+    $scope.streetGame = {};
+
     $scope.createGame = function() {
-        var game = $scope.game;
-        game.startTime = getDateObject(game.startTime);
-        game.endTime = getDateObject(game.endTime);
-        game.startPointDesc = $scope.page.points[0].address;
-        game.route = $scope.getRoute();
+        $scope.streetGame = $scope.game;
+        //game.startTime = getDateObject(game.startTime);
+        //game.endTime = getDateObject(game.endTime);
+        //game.startPointDesc = $scope.page.points[0].address;
+        //game.route = $scope.getRoute();
 
-        // wyślij http
-        // przekieruj na listę gier
-
-        var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}};
-        $http.post(url, $.param(game), config)
+        var url = "/streetChase/protected/streetGames/add";
+        //var config = {headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}};
+        $http.post(url, $.param($scope.streetGame) /*, config*/)
             .success(function (data) {
-                $scope.gameCreateSuccess(data, null, false);
+                $scope.gameCreateSuccess();
             })
             .error(function () {
                 // todo
             });
+    }
+
+    $scope.gameCreateSuccess = function() {
+        // todo
     }
 
 });
