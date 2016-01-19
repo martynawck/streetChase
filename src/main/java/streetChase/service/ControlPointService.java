@@ -43,7 +43,7 @@ public class ControlPointService {
         int pointId = -1;
         for (int i = route.size()-1; i >= 0; --i) {
             PointDto dto = route.get(i);
-            Point p = GeometryUtil.getPointFromStrings(dto.getLat(), dto.getLon());
+            Point p = GeometryUtil.getPointFromStrings(dto.getLon(), dto.getLat());
             ControlPoint c = new ControlPoint(gameId, dto.getName(), pointId, p, (i == 0), dto.getHint());
             pointId = saveControlPoint(c);
 
