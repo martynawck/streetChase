@@ -8,8 +8,8 @@
 <div class="app-body">
     <div class="app-content">
 
-        <div class="scrollable scrollable-content section">
-            <spring:message code='welcomePage.description'/>
+        <div class="scrollable scrollable-content section center">
+            <h4><spring:message code='welcomePage.description'/></h4>
         </div>
     </div>
 </div>

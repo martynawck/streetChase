@@ -28,15 +28,15 @@
 
             <div ng-show="isActiveTab(1)">
                 <br/>
-                <div ng-repeat="(i, point) in page.points">
-                    <form method="post" action="j_spring_security_check">
-                        <div class="form-group">
-                            <label>{{point.address}}</label>
-                            <input type="text" ng-model="point.hint" class="form-control" placeholder="Wskazówka"><br/>
-                            <input type="text" ng-model="point.question" class="form-control" placeholder="Pytanie"><br/>
-                            <input type="text" ng-model="point.answer" class="form-control" placeholder="Odpowiedź"><br/>
+                <div class="panel-group" ng-repeat="(i, point) in page.points">
+                        <div class="panel panel-default panel-modified">
+                            <div class="panel-heading" ng-click="clickOnPoint(i)">{{point.address}}</div>
+                            <div class="panel-body" ng-show="point.visible">
+                                <input type="text" ng-model="point.hint" class="form-control" placeholder="Wskazówka"><br/>
+                                <input type="text" ng-model="point.question" class="form-control" placeholder="Pytanie"><br/>
+                                <input type="text" ng-model="point.answer" class="form-control" placeholder="Odpowiedź"><br/>
+                            </div>
                         </div>
-                    </form>
                 </div>
             </div>
 

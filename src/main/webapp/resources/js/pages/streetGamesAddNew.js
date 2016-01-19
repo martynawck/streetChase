@@ -40,7 +40,8 @@ function addPoint() {
                     map: map
                 }),
         'address': tmpPoint.address,
-        'latLon' : tmpPoint.latLon
+        'latLon' : tmpPoint.latLon,
+        visible: true
     };
     points.push(point);
 
@@ -51,10 +52,12 @@ App.directive('myMap', function() {
     var link = function(scope, element, attrs) {
 
         var mapOptions = {
-            center: new google.maps.LatLng(50, 2),
-            zoom: 4,
+            center: new google.maps.LatLng(51.783333, 19.466667),
+            zoom: 6,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            scrollwheel: false
+            scrollwheel: true,
+            mapTypeControl: false,
+            streetViewControl: false
         };
 
         function initMap() {
@@ -107,6 +110,10 @@ App.controller("newGameController", function($scope, $http){
         return $scope.activeTab == id;
     }
 
+    $scope.clickOnPoint = function(id) {
+        $scope.page.points[id].visible = !$scope.page.points[id].visible;
+    }
+
     $scope.getRoute = function(){
         var route = [];
         for (i = 0; i < $scope.page.points.length; ++i) {
@@ -122,7 +129,6 @@ App.controller("newGameController", function($scope, $http){
         }
         return route;
     }
-
 
     $scope.createGame = function() {
         var data = {
@@ -146,7 +152,7 @@ App.controller("newGameController", function($scope, $http){
     }
 
     $scope.gameCreateSuccess = function() {
-        // todo
+        window.location.href = window.location.origin + "/streetChase/protected/streetGames";
     }
 
 });
