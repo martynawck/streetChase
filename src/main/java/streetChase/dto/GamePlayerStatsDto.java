@@ -26,14 +26,14 @@ public class GamePlayerStatsDto {
         sections = new ArrayList<RouteSectionDto>();
     }
 
-    public GamePlayerStatsDto(Subscription subs, List<UserLocation> userLocationList, double routeLength, List<RouteSectionDto> sections) {
+    public GamePlayerStatsDto(StreetGame game, User player, Subscription subs, List<UserLocation> userLocationList, double routeLength, List<RouteSectionDto> sections) {
         this();
 
-        if (subs == null || subs.getGame_finished() == null || subs.getGame_started() == null || userLocationList == null || sections == null)
+        if (game == null || player == null || subs == null || subs.getGame_finished() == null || subs.getGame_started() == null || userLocationList == null || sections == null)
             return;
 
-//        this.gameName = subs.getGameName();
-//        this.playerName = subs.getPlayerName();
+       this.gameName = game.getName();
+        this.playerName = player.getName();
         this.routeLength = routeLength;
         long routeTimeInSeconds = (subs.getGame_finished().getTime() - subs.getGame_started().getTime())/1000;
         this.routeSpeed = routeLength/routeTimeInSeconds;

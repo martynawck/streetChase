@@ -21,8 +21,6 @@ import java.util.List;
 @RequestMapping(value = "/protected/stats")
 public class StatsController {
 
-    @Autowired
-    SubscriptionService subscriptionService;
 
     @Autowired
     StreetGameService streetGameService;
@@ -39,7 +37,7 @@ public class StatsController {
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<?> getGamesList() {
-        List<StatsDto> result = subscriptionService.getStatsForUser(getUserEmail());
+        List<StatsDto> result = streetGameService.getStatsForUser(getUserEmail());
 
         return new ResponseEntity<List<StatsDto>>(result, HttpStatus.OK);
     }

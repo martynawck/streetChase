@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import streetChase.dto.GamePlayerStatsDto;
 import streetChase.dto.StatsDto;
+import streetChase.model.StreetGame;
 import streetChase.model.Subscription;
 import streetChase.repository.SubscriptionRepository;
 import streetChase.repository.UserRepository;
@@ -88,27 +89,6 @@ public class SubscriptionService {
         Subscription subscription = subRepository.findByUserAndGame(user, game);
         subscription.setGame_finished(new Timestamp(timestamp));
         subRepository.save(subscription);//findByUserAndGame(user, game);//fi.fin(id);
-    }
-
-    public List<StatsDto> getStatsForUser(String creatorEmail) {
-//        int creatorId = userRepository.findByEmail(creatorEmail).getId();
-//        List<Subscription> subs = subRepository.findSubscriptionsForStats(creatorId);
-        List<StatsDto> result = new ArrayList<StatsDto>();
-//        for (Subscription s : subs) {
-//            int i = getIdOfGameStats(result, s.getStreetGame().getId());
-//            if (i < 0)
-//                result.add(new StatsDto(s));
-//            else
-//                result.get(i).addPlayer(s.getPlayer());
-//        }
-        return result;
-    }
-
-    private int getIdOfGameStats(List<StatsDto> list, int id) {
-        for (int i = 0; i < list.size(); ++i)
-            if (list.get(i).getId() == id)
-                return i;
-        return -1;
     }
 
 }

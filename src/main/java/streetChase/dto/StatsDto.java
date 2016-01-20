@@ -18,17 +18,14 @@ public class StatsDto {
     public StatsDto() {
         this.players = new ArrayList<PlayerStatsDto>();
     }
-    public StatsDto(StreetGame game) {
+
+    public StatsDto(StreetGame game, List<User> players) {
         this();
-        if (game == null)
-            return;
         this.id = game.getId();
         this.name = game.getName();
-    }
-
-    public StatsDto(Subscription s) {
-//        this(s.getStreetGame());
-//        players.add(new PlayerStatsDto(s.getPlayer()));
+        for (User player : players) {
+            this.players.add(new PlayerStatsDto(player));
+        }
     }
 
     public void addPlayer(User player) {

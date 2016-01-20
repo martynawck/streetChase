@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import streetChase.model.Subscription;
-import streetChase.model.User;
 
 import java.util.List;
 
@@ -38,8 +37,8 @@ public interface SubscriptionRepository extends CrudRepository<Subscription, Int
     public List<Subscription> findByUserNotPlayed(@Param("user") int user);
 
 
-    public final static String FIND_FOR_STATS =
-            "select s from Subscription s where s.played = true";
-    @Query(FIND_FOR_STATS)
-    List<Subscription> findSubscriptionsForStats( int creatorId);
+    public final static String FIND_BY_GAME_PLAYED =
+            "select s from Subscription s where s.played = true and s.game = :game";
+    @Query(FIND_BY_GAME_PLAYED)
+    List<Subscription> findByGamePlayed( @Param("game")int id);
 }

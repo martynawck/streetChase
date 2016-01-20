@@ -13,10 +13,7 @@ import streetChase.repository.*;
 import streetChase.utils.RouteUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Service
 public class StreetGameService {
@@ -120,15 +117,41 @@ public class StreetGameService {
         return null;
     }
 
+
+
+    public List<StatsDto> getStatsForUser(String creatorEmail) {
+        int creatorId = userRepository.findByEmail(creatorEmail).getId();
+        List<StreetGame> games = streetGameRepository.findByCreatorId(creatorId);
+        List<StatsDto> result = new ArrayList<StatsDto>();
+
+        for (StreetGame game : games) {
+            if (game.getEnd_time().getTime() < new Date().getTime())
+                result.add(new StatsDto(game, getPlayerList(game)));
+        }
+
+        return result;
+    }
+
+    private List<User> getPlayerList(StreetGame game) {
+        List<Subscription> subs = subscriptionRepository.findByGamePlayed(game.getId());
+        List<User> players = new ArrayList<User>();
+        for (Subscription sub : subs) {
+            players.add(userRepository.findOne(sub.getUser()));
+        }
+        return players;
+    }
+
+
     public GamePlayerStatsDto getGamePlayerStats(int gameId, int playerId) {
+        StreetGame game = streetGameRepository.findOne(gameId);
+        User player = userRepository.findOne(playerId);
         Subscription subs = subscriptionRepository.findByUserAndGame(playerId, gameId);
-        Subscription subs2 = subscriptionRepository.findOne(36);
-//        List<UserLocation> userLocationList = getUserLocations(gameId, playerId);
-//        double routeLength = RouteUtils.getRouteLengthFromLocations(userLocationList);
-//        List<RouteSectionDto> sections = getRouteSectionsStats(gameId, playerId);
-//
-//        return new GamePlayerStatsDto(subs, userLocationList, routeLength, sections);
-        return null;
+        List<UserLocation> userLocationList = getUserLocations(gameId, playerId);
+
+        double routeLength = RouteUtils.getRouteLengthFromLocations(userLocationList);
+        List<RouteSectionDto> sections = getRouteSectionsStats(gameId, playerId);
+
+        return new GamePlayerStatsDto(game, player, subs, userLocationList, routeLength, sections);
     }
 
 
