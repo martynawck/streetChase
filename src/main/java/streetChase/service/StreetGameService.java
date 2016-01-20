@@ -148,7 +148,7 @@ public class StreetGameService {
         Subscription subs = subscriptionRepository.findByUserAndGame(playerId, gameId);
         List<UserLocation> userLocationList = getUserLocations(gameId, playerId);
 
-        double routeLength = RouteUtils.getRouteLengthFromLocations(userLocationList);
+        double routeLength = 0;//RouteUtils.getRouteLengthFromLocations(userLocationList);
         List<RouteSectionDto> sections = getRouteSectionsStats(gameId, playerId);
 
         return new GamePlayerStatsDto(game, player, subs, userLocationList, routeLength, sections);
@@ -170,7 +170,7 @@ public class StreetGameService {
             endReached = userReachedPointRepository.findByControlPointAndUser(playerId, end.getId());
 
             // wyliczyć długość przejechanej trasy między tymi pointsami
-            double length = RouteUtils.getSectionLength(gameId, beginReached, endReached);
+            double length = 0;//RouteUtils.getSectionLength(gameId, beginReached, endReached);
 
             // wyliczyć czas
             long timeInSeconds = (endReached.getTimestamp().getTime() - beginReached.getTimestamp().getTime())/1000;

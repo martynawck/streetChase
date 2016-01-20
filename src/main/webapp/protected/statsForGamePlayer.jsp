@@ -53,9 +53,9 @@
                                 <tbody>
                                     <tr ng-repeat="section in data.sections">
                                         <td>{{section.name}}</td>
-                                        <td>{{section.length}} m </td>
+                                        <td></td>
                                         <td>{{section.time}}</td>
-                                        <td>{{section.speed}}</td>
+                                        <td></td>
                                     </tr>
                                 </tbody>
                             </table>

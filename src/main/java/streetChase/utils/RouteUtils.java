@@ -61,15 +61,13 @@ public class RouteUtils {
             ((org.postgresql.PGConnection)conn).addDataType("geometry", "org.postgis.PGgeometry");
             ((org.postgresql.PGConnection)conn).addDataType("box3d","org.postgis.PGbox3d");
             Statement s = conn.createStatement();
-            ResultSet r = s.executeQuery("SELECT ST_Length(\n" +
-                    "\tST_Transform(\n" +
-                    "\t\tST_GeomFromEWKT('SRID=4326;LINESTRING("+query+")'),\n" +
-                    "\t\t26986\n" +
-                    "\t)\n" +
-                    ");");
+            String q = "SELECT ST_Length(ST_Transform(" +
+                            "ST_GeomFromEWKT('SRID=4326;LINESTRING("+query+")'),26986" +
+                        "));";
+            ResultSet r = s.executeQuery(q);
             while( r.next() ) {
 
-                geom = (Double)r.getDouble(1);//.getObject(1);
+                geom = (Double)r.getDouble(0);//.getObject(1);
             }
             s.close();
             conn.close();
