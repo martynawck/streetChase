@@ -31,6 +31,7 @@ public class RouteUtils {
         for (UserLocation ul : userLocationList) {
             pointStrings.add(GeometryUtil.getPointString(ul.getLocation()));
         }
+
         return lengthOfRoute(pointStrings);
     }
 
@@ -41,15 +42,18 @@ public class RouteUtils {
         java.sql.Connection conn;
         Double geom = new Double(0);
         String query = "";
+        int iterations = 0;
         for (String point : points){
             String sub = point.substring(6,point.length()-1);
             query+=sub;
+            iterations++;
 
-            if (!point.equals(points.get(points.size() -1 ) )) {
+            if (iterations <= points.size() - 1) {
                 query+=",";
             }
 
         }
+
         try {
             Class.forName("org.postgresql.Driver");
             String url = "jdbc:postgresql://localhost:5432/postgres";
