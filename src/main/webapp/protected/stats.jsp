@@ -21,7 +21,7 @@
                     <div ng-show="shouldBeVisible(i)">
                         <div class="panel-body">
                             <div ng-repeat="(j, player) in game.players">
-                                <a href="/stats/{{game.id}}/{{player.id}}">
+                                <a href=" stats/{{game.id}}/{{player.id}}">
                                     {{player.name}}
                                 </a>
                             </div>

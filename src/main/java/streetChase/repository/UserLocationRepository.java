@@ -11,7 +11,9 @@ import java.util.List;
 
 public interface UserLocationRepository extends CrudRepository<UserLocation, Integer> {
     public final static String FIND_BY_GAME_AND_USER =
-            "select t from UserLocation t where t.street_game_id = :game and t.user_id = :user";
+            "select t from UserLocation t where t.street_game_id = :game and t.user_id = :user order by t.timestamp";
+    @Query(FIND_BY_GAME_AND_USER)
+    public List<UserLocation> getByGameAndUser(@Param("game") int gameId, @Param("user") int userId);
 
     public final static String DELETE_BY_GAME_AND_USER =
             "delete from UserLocation t where t.street_game_id = :game and t.user_id = :user";

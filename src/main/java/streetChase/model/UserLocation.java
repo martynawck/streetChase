@@ -62,4 +62,16 @@ public class UserLocation {
         this.street_game_id = street_game_id;
     }
 
+    public double getLat() {
+        if (location == null)
+            return -10000;
+        return location.getY();
+    }
+
+    public double getLon() {
+        if (location == null)
+            return -10000;
+        return location.getX();
+    }
+
 }

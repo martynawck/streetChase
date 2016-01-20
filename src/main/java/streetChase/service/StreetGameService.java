@@ -1,12 +1,19 @@
 package streetChase.service;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import streetChase.dto.GamePlayerStatsDto;
 import streetChase.dto.StatsDto;
 import streetChase.dto.StreetGameDto;
+import streetChase.model.ControlPoint;
 import streetChase.model.StreetGame;
+import streetChase.model.User;
+import streetChase.model.UserLocation;
+import streetChase.repository.ControlPointRepository;
 import streetChase.repository.StreetGameRepository;
+import streetChase.repository.UserLocationRepository;
 import streetChase.repository.UserRepository;
 
 import javax.annotation.Resource;
@@ -25,6 +32,9 @@ public class StreetGameService {
 
     @Resource
     private UserRepository userRepository;
+
+    @Resource
+    private UserLocationRepository userLocationRepository;
 
     @Transactional
     public List findAll() {
@@ -110,4 +120,26 @@ public class StreetGameService {
         return null;
     }
 
+    public GamePlayerStatsDto getGamePlayerStats(int gameId, int playerId) {
+        // nazwa gry, usera
+        // lista punktów
+        StreetGame game = streetGameRepository.findOne(gameId);
+        User player = userRepository.findOne(playerId);
+        List<UserLocation> userLocationList = getUserLocations(gameId, playerId);
+        float routeLength = 0;
+
+        return new GamePlayerStatsDto(game, player, userLocationList, routeLength);
+    }
+
+    private List<UserLocation> getUserLocations(int gameId, int playerId) {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                "applicationContext.xml");
+
+        UserLocationRepository repository = context.getBean(UserLocationRepository.class);
+        List<UserLocation> result =  repository.getByGameAndUser(gameId, playerId);
+
+        context.close();
+
+        return result;
+    }
 }

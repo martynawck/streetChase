@@ -2,6 +2,7 @@ package streetChase.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import streetChase.dto.GamePlayerStatsDto;
 import streetChase.dto.StatsDto;
 import streetChase.model.Subscription;
 import streetChase.repository.SubscriptionRepository;
@@ -109,4 +110,5 @@ public class SubscriptionService {
                 return i;
         return -1;
     }
+
 }
