@@ -23,6 +23,9 @@
     <definition name="stats" extends="master.page">
         <put-attribute name="body" value="/protected/stats.jsp"/>
     </definition>
+    <definition name="statsForGamePlayer" extends="master.page">
+        <put-attribute name="body" value="/protected/statsForGamePlayer.jsp"/>
+    </definition>
 
     <definition name="login" extends="master.page">
         <!--<put-attribute name="menu" value=""/>-->

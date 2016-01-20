@@ -3,6 +3,7 @@ package streetChase.service;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import streetChase.dto.StatsDto;
 import streetChase.dto.StreetGameDto;
 import streetChase.model.StreetGame;
 import streetChase.repository.StreetGameRepository;
@@ -108,4 +109,5 @@ public class StreetGameService {
         //return streetGameRepository.findByIs_private(false);
         return null;
     }
+
 }

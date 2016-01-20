@@ -10,18 +10,20 @@ import java.sql.Timestamp;
 @Table(name = "street_game_subscription", schema = "public")
 public class Subscription {
 
-
     @Id
     @GeneratedValue
     private int id;
-
-    @Column(name = "street_game_id")
-    private int game;
-    @Column(name = "user_id")
-    private int user;
     private boolean played;
     private Timestamp game_started;
     private Timestamp game_finished;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", unique = false)
+    private User player;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "street_game_id", unique = false)
+    private StreetGame streetGame;
 
     public  Subscription () {}
 
@@ -58,19 +60,27 @@ public class Subscription {
     }
 
     public int getUser() {
-        return user;
+        return this.player.getId();
     }
 
     public void setUser(int user_id) {
-        this.user = user_id;
+        this.player.setId(user_id);
     }
 
     public int getGame() {
-        return game;
+        return this.streetGame.getId();
     }
 
     public void setGame(int street_game_id) {
-        this.game = street_game_id;
+        this.streetGame.setId(street_game_id);
+    }
+
+    public User getPlayer() {
+        return player;
+    }
+
+    public StreetGame getStreetGame() {
+        return streetGame;
     }
 
     @Override
