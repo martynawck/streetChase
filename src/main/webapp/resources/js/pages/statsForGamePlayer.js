@@ -60,7 +60,7 @@ App.controller("StatsForGamePlayerController", function($scope, $http){
         var url = window.location.pathname;
         $http.get(url)
             .success(function(data){
-                //$scope.data = data;
+                $scope.data = data;
                 $scope.drawRoute();
             }). error(function(){
                 // todo
@@ -68,7 +68,12 @@ App.controller("StatsForGamePlayerController", function($scope, $http){
     }
 
     $scope.drawRoute = function() {
-        map.setCenter(new google.maps.LatLng(52.183432, 21.023503))
+        if ($scope.data.route.length < 2)
+            return;
+
+        var centerLat = $scope.data.route[0].lat;
+        var centerLon = $scope.data.route[0].lng;
+        map.setCenter(new google.maps.LatLng(centerLat, centerLon))
         map.setZoom(11);
         var flightPath = new google.maps.Polyline({
             path: $scope.data.route,

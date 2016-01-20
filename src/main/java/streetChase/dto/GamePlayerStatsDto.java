@@ -29,18 +29,27 @@ public class GamePlayerStatsDto {
     public GamePlayerStatsDto(StreetGame game, User player, Subscription subs, List<UserLocation> userLocationList, double routeLength, List<RouteSectionDto> sections) {
         this();
 
-        if (game == null || player == null || subs == null || subs.getGame_finished() == null || subs.getGame_started() == null || userLocationList == null || sections == null)
-            return;
+        if (game != null) {
+            this.gameName = game.getName();
+        }
+        if (player != null) {
+            this.playerName = player.getName();
+        }
 
-       this.gameName = game.getName();
-        this.playerName = player.getName();
+        if (userLocationList != null) {
+            for (UserLocation ul : userLocationList)
+                this.route.add(new RoutePointDto(ul));
+        }
+
         this.routeLength = routeLength;
-        long routeTimeInSeconds = (subs.getGame_finished().getTime() - subs.getGame_started().getTime())/1000;
-        this.routeSpeed = routeLength/routeTimeInSeconds;
-        this.routeTime = TimeUtils.formatTimeInterval(routeTimeInSeconds);
 
-        for (UserLocation ul : userLocationList)
-            this.route.add(new RoutePointDto(ul));
+        if (subs != null && subs.getGame_finished() != null && subs.getGame_started() != null) {
+            long routeTimeInSeconds = (subs.getGame_finished().getTime() - subs.getGame_started().getTime()) / 1000;
+            this.routeSpeed = routeLength / routeTimeInSeconds;
+            this.routeTime = TimeUtils.formatTimeInterval(routeTimeInSeconds);
+        }
+
+        this.sections = sections;
     }
 
     public String getGameName() {
