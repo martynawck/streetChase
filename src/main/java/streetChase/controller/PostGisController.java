@@ -32,6 +32,21 @@ public class PostGisController {
         return new ResponseEntity<JSONObject>(jsonObject, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/z/{id}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<JSONObject> z(@PathVariable(value="id") int location_id) {
+
+        String point1 = "POINT(-72.1235 42.3521)";
+        String point2 = "POINT(-72.1260 42.45)";
+        ArrayList<String> points = new ArrayList<String>();
+        points.add(point1);
+        points.add(point2);
+        double distance = lengthOfRoute(points);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("route", distance);
+
+        return new ResponseEntity<JSONObject>(jsonObject, HttpStatus.CREATED);
+    }
+
     /*Odleg³oœæ miêdzy punktami */
 
     public double distanceBetweenPoints(String point1, String point2) {
@@ -68,8 +83,18 @@ public class PostGisController {
         Double geom = new Double(0);
         String query = "";
         for (String point : points){
+            String sub = point.substring(6,point.length()-1);
+            query+=sub;
+
+            if (!point.equals(points.get(points.size() -1 ) )) {
+                query+=",";
+            }
 
         }
+
+        //return query;
+
+      //  System.out.print(query);
         //fsfsd
 
         try {
@@ -81,7 +106,7 @@ public class PostGisController {
             Statement s = conn.createStatement();
             ResultSet r = s.executeQuery("SELECT ST_Length(\n" +
                     "\tST_Transform(\n" +
-                    "\t\tST_GeomFromEWKT('SRID=4326;LINESTRING(-72.1260 42.45, -72.1240 42.45666, -72.123 42.1546)'),\n" +
+                    "\t\tST_GeomFromEWKT('SRID=4326;LINESTRING("+query+")'),\n" +
                     "\t\t26986\n" +
                     "\t)\n" +
                     ");");
