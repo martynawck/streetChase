@@ -1,17 +1,26 @@
 package streetChase.controller;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import streetChase.model.UserLocation;
+import streetChase.model.UserReachedPoint;
+import streetChase.repository.UserLocationRepository;
+import streetChase.service.UserReachedPointService;
+import streetChase.utils.GeometryUtil;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Martyna on 2016-01-20.
@@ -19,6 +28,9 @@ import java.util.ArrayList;
 @Controller
 @RequestMapping(value = "/postgis")
 public class PostGisController {
+
+    @Autowired
+    UserReachedPointService userReachedPointService;
 
     @RequestMapping(value = "/x/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<JSONObject> x(@PathVariable(value="id") int location_id) {
@@ -45,6 +57,37 @@ public class PostGisController {
         jsonObject.put("route", distance);
 
         return new ResponseEntity<JSONObject>(jsonObject, HttpStatus.CREATED);
+    }
+
+
+    @RequestMapping(value = "/xyz/{userId}/{gameId}/{cp1}/{cp2}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<JSONArray> xyz(@PathVariable(value="userId") int userId, @PathVariable(value="gameId") int gameId,
+                                         @PathVariable(value="cp1") int controlPoint1,@PathVariable(value="cp2") int controlPoint2) {
+
+        UserReachedPoint userReachedPoint1 = userReachedPointService.findByControlPointAndUser(userId, controlPoint1);//.getControlPoint(8);
+        UserReachedPoint userReachedPoint2 = userReachedPointService.findByControlPointAndUser(userId, controlPoint2);//getControlPoint(9);
+
+        List<UserLocation> userLocations;
+
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                "applicationContext.xml");
+
+        UserLocationRepository repository = context.getBean(UserLocationRepository.class);
+        userLocations = repository.findBetweenTimestamp(userId,gameId ,userReachedPoint1.getTimestamp(), userReachedPoint2.getTimestamp());
+
+        context.close();
+
+        GeometryUtil geometryUtil = new GeometryUtil();
+
+        JSONArray jsonArray = new JSONArray();
+        for (UserLocation userLocation :userLocations ) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("location", geometryUtil.wktFromGeometry(userLocation.getLocation()));
+            jsonObject.put("timestamp",userLocation.getTimestamp());
+            jsonArray.add(jsonObject);
+        }
+
+        return new ResponseEntity<JSONArray>(jsonArray, HttpStatus.CREATED);
     }
 
     /*Odleg³oœæ miêdzy punktami */
