@@ -15,6 +15,7 @@ import streetChase.model.UserReachedPoint;
 import streetChase.repository.UserLocationRepository;
 import streetChase.service.UserReachedPointService;
 import streetChase.utils.GeometryUtil;
+import streetChase.utils.RouteUtils;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -52,7 +53,7 @@ public class PostGisController {
         ArrayList<String> points = new ArrayList<String>();
         points.add(point1);
         points.add(point2);
-        double distance = lengthOfRoute(points);
+        double distance = RouteUtils.lengthOfRoute(points);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("route", distance);
 
@@ -90,7 +91,7 @@ public class PostGisController {
         return new ResponseEntity<JSONArray>(jsonArray, HttpStatus.CREATED);
     }
 
-    /*Odleg³oœæ miêdzy punktami */
+    /*Odlegï¿½oï¿½ï¿½ miï¿½dzy punktami */
 
     public double distanceBetweenPoints(String point1, String point2) {
         java.sql.Connection conn;
@@ -121,49 +122,4 @@ public class PostGisController {
 
     }
 
-    public double lengthOfRoute(ArrayList<String> points) {
-        java.sql.Connection conn;
-        Double geom = new Double(0);
-        String query = "";
-        for (String point : points){
-            String sub = point.substring(6,point.length()-1);
-            query+=sub;
-
-            if (!point.equals(points.get(points.size() -1 ) )) {
-                query+=",";
-            }
-
-        }
-
-        //return query;
-
-      //  System.out.print(query);
-        //fsfsd
-
-        try {
-            Class.forName("org.postgresql.Driver");
-            String url = "jdbc:postgresql://localhost:5432/postgres";
-            conn = DriverManager.getConnection(url, "postgres", "postgres");
-            ((org.postgresql.PGConnection)conn).addDataType("geometry", "org.postgis.PGgeometry");
-            ((org.postgresql.PGConnection)conn).addDataType("box3d","org.postgis.PGbox3d");
-            Statement s = conn.createStatement();
-            ResultSet r = s.executeQuery("SELECT ST_Length(\n" +
-                    "\tST_Transform(\n" +
-                    "\t\tST_GeomFromEWKT('SRID=4326;LINESTRING("+query+")'),\n" +
-                    "\t\t26986\n" +
-                    "\t)\n" +
-                    ");");
-            while( r.next() ) {
-
-                geom = (Double)r.getDouble(1);//.getObject(1);
-            }
-            s.close();
-            conn.close();
-        }
-        catch( Exception e ) {
-            e.printStackTrace();
-        }
-        return geom;
-
-    }
 }

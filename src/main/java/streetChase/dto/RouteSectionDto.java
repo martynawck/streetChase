@@ -1,5 +1,7 @@
 package streetChase.dto;
 
+import streetChase.utils.TimeUtils;
+
 public class RouteSectionDto {
 
     private String name;
@@ -8,6 +10,13 @@ public class RouteSectionDto {
     private double speed;
 
     public RouteSectionDto() { }
+
+    public RouteSectionDto(String beginName, String endName, double length, long timeInSeconds) {
+        this.name = beginName + " - " + endName;
+        this.length = length;
+        this.time = TimeUtils.formatTimeInterval(timeInSeconds);
+        this.speed = length/timeInSeconds;
+    }
 
     public String getName() {
         return name;

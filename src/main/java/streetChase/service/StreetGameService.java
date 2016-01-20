@@ -10,6 +10,7 @@ import streetChase.dto.StatsDto;
 import streetChase.dto.StreetGameDto;
 import streetChase.model.*;
 import streetChase.repository.*;
+import streetChase.utils.RouteUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class StreetGameService {
 
     @Resource
     private SubscriptionRepository subscriptionRepository;
+
+    @Resource
+    private UserReachedPointRepository userReachedPointRepository;
 
     @Transactional
     public List findAll() {
@@ -118,12 +122,13 @@ public class StreetGameService {
 
     public GamePlayerStatsDto getGamePlayerStats(int gameId, int playerId) {
         Subscription subs = subscriptionRepository.findByUserAndGame(gameId, playerId);
-        List<UserLocation> userLocationList = getUserLocations(gameId, playerId);
-        double routeLength = 0; // do policzenia z api
-        List<RouteSectionDto> sections = getRouteSectionsStats(gameId, playerId);
 
-
-        return new GamePlayerStatsDto(subs, userLocationList, routeLength, sections);
+//        List<UserLocation> userLocationList = getUserLocations(gameId, playerId);
+//        double routeLength = RouteUtils.getRouteLengthFromLocations(userLocationList);
+//        List<RouteSectionDto> sections = getRouteSectionsStats(gameId, playerId);
+//
+//        return new GamePlayerStatsDto(subs, userLocationList, routeLength, sections);
+        return null;
     }
 
 
@@ -132,14 +137,28 @@ public class StreetGameService {
         if (controlPoints == null || controlPoints.size() < 2)
             return Collections.emptyList();
 
+        List<RouteSectionDto> sections = new ArrayList<RouteSectionDto>();
         ControlPoint begin = controlPoints.get(0);
+        UserReachedPoint beginReached = userReachedPointRepository.findByControlPointAndUser(playerId, begin.getId());
         ControlPoint end = null;
+        UserReachedPoint endReached = null;
         for (int i = 1; i < controlPoints.size(); ++i) {
             end = controlPoints.get(i);
-            // wyliczyć długość przejechanej trasy między tymi pointsami 
+            endReached = userReachedPointRepository.findByControlPointAndUser(playerId, end.getId());
+
+            // wyliczyć długość przejechanej trasy między tymi pointsami
+            double length = RouteUtils.getSectionLength(gameId, beginReached, endReached);
+
+            // wyliczyć czas
+            long timeInSeconds = (endReached.getTimestamp().getTime() - beginReached.getTimestamp().getTime())/1000;
+
+            sections.add(new RouteSectionDto(begin.getName(), end.getName(), length, timeInSeconds));
 
             begin = end;
+            beginReached = endReached;
         }
+
+        return sections;
     }
 
     private List<ControlPoint> getControlPoints(int gameId) {

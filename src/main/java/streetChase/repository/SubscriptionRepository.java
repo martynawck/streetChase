@@ -26,7 +26,6 @@ public interface SubscriptionRepository extends CrudRepository<Subscription, Int
     @Query(FIND_BY_GAME_AND_USER)
     public Subscription findByUserAndGame(@Param("user") int user, @Param("game") int game);
 
-
     public final static String FIND_BY_USER_PLAYED =
             "select t from Subscription t where t.played = TRUE and t.player.id = :user";
     @Query(FIND_BY_USER_PLAYED)

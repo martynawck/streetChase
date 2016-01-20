@@ -8,13 +8,18 @@ import com.vividsolutions.jts.io.WKTWriter;
 
 import java.util.Date;
 
-/**
- * Created by Martyna on 2016-01-17.
- */
 public class GeometryUtil {
 
+    public static String getPointString(Point p) {
+        return getPointString(String.valueOf(p.getX()), String.valueOf(p.getY()));
+    }
+
+    public static String getPointString(String lat, String lon) {
+        return "POINT(" + lat + " " + lon + ")";
+    }
+
     public static Point getPointFromStrings(String lat, String lon) {
-        String point = "POINT(" + lat + " " + lon + ")";
+        String point = getPointString(lat, lon);
         GeometryUtil geometryUtil = new GeometryUtil();
         Geometry geom = geometryUtil.wktToGeometry(point);
 
