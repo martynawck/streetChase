@@ -32,8 +32,8 @@ public class GamePlayerStatsDto {
         if (subs == null || subs.getGame_finished() == null || subs.getGame_started() == null || userLocationList == null || sections == null)
             return;
 
-        this.gameName = subs.getGameName();
-        this.playerName = subs.getPlayerName();
+//        this.gameName = subs.getGameName();
+//        this.playerName = subs.getPlayerName();
         this.routeLength = routeLength;
         long routeTimeInSeconds = (subs.getGame_finished().getTime() - subs.getGame_started().getTime())/1000;
         this.routeSpeed = routeLength/routeTimeInSeconds;

@@ -91,16 +91,16 @@ public class SubscriptionService {
     }
 
     public List<StatsDto> getStatsForUser(String creatorEmail) {
-        int creatorId = userRepository.findByEmail(creatorEmail).getId();
-        List<Subscription> subs = subRepository.findSubscriptionsForStats(creatorId);
+//        int creatorId = userRepository.findByEmail(creatorEmail).getId();
+//        List<Subscription> subs = subRepository.findSubscriptionsForStats(creatorId);
         List<StatsDto> result = new ArrayList<StatsDto>();
-        for (Subscription s : subs) {
-            int i = getIdOfGameStats(result, s.getStreetGame().getId());
-            if (i < 0)
-                result.add(new StatsDto(s));
-            else
-                result.get(i).addPlayer(s.getPlayer());
-        }
+//        for (Subscription s : subs) {
+//            int i = getIdOfGameStats(result, s.getStreetGame().getId());
+//            if (i < 0)
+//                result.add(new StatsDto(s));
+//            else
+//                result.get(i).addPlayer(s.getPlayer());
+//        }
         return result;
     }
 

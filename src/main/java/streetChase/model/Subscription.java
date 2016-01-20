@@ -17,13 +17,11 @@ public class Subscription {
     private Timestamp game_started;
     private Timestamp game_finished;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id", unique = false)
-    private User player;
+    @Column(name = "user_id")
+    private int user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "street_game_id", unique = false)
-    private StreetGame streetGame;
+    @Column(name = "street_game_id")
+    private int game;
 
     public  Subscription () {}
 
@@ -60,27 +58,18 @@ public class Subscription {
     }
 
     public int getUser() {
-        return this.player.getId();
+        return this.user;
     }
 
-    public void setUser(int user_id) {
-        this.player.setId(user_id);
+    public void setUser(int user_id) { this.user = user_id;
     }
 
     public int getGame() {
-        return this.streetGame.getId();
+        return game;
     }
 
     public void setGame(int street_game_id) {
-        this.streetGame.setId(street_game_id);
-    }
-
-    public User getPlayer() {
-        return player;
-    }
-
-    public StreetGame getStreetGame() {
-        return streetGame;
+        this.game = street_game_id;
     }
 
     @Override
@@ -98,15 +87,4 @@ public class Subscription {
         return id;
     }
 
-    public String getGameName() {
-        if (streetGame == null)
-            return "";
-        return streetGame.getName();
-    }
-
-    public String getPlayerName() {
-        if (player == null)
-            return "";
-        return player.getName();
-    }
 }

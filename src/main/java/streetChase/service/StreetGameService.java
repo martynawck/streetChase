@@ -121,8 +121,8 @@ public class StreetGameService {
     }
 
     public GamePlayerStatsDto getGamePlayerStats(int gameId, int playerId) {
-        Subscription subs = subscriptionRepository.findByUserAndGame(gameId, playerId);
-
+        Subscription subs = subscriptionRepository.findByUserAndGame(playerId, gameId);
+        Subscription subs2 = subscriptionRepository.findOne(36);
 //        List<UserLocation> userLocationList = getUserLocations(gameId, playerId);
 //        double routeLength = RouteUtils.getRouteLengthFromLocations(userLocationList);
 //        List<RouteSectionDto> sections = getRouteSectionsStats(gameId, playerId);

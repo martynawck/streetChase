@@ -27,8 +27,8 @@ public class StatsDto {
     }
 
     public StatsDto(Subscription s) {
-        this(s.getStreetGame());
-        players.add(new PlayerStatsDto(s.getPlayer()));
+//        this(s.getStreetGame());
+//        players.add(new PlayerStatsDto(s.getPlayer()));
     }
 
     public void addPlayer(User player) {
