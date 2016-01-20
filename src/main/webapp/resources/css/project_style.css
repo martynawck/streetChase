@@ -28,3 +28,33 @@ body, html {
 .panel-modified {
     padding: 0px;
 }
+
+
+thead {
+    font-weight: bold;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+table td, table th {
+    padding: 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+table tr:first-child th {
+    border-top: 0;
+}
+table tr:last-child td {
+    border-bottom: 0;
+}
+table tr td:first-child,
+table tr th:first-child {
+    border-left: 0;
+}
+table tr td:last-child,
+table tr th:last-child {
+    border-right: 0;
+}
+

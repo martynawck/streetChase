@@ -31,7 +31,34 @@
                             <label>Gra:</label>
                             <span>{{data.gameName}}</span> <br/>
                             <label>Gracz:</label>
-                            <span>{{data.playerName}}</span>
+                            <span>{{data.playerName}}</span> <br/>
+                            <label>Przebyta odległość:</label>
+                            <span>{{data.routeLength}} m</span> <br/>
+                            <label>Czas przejścia:</label>
+                            <span>{{data.routeTime}}</span> <br/>
+                            <label>Średnia prędkość:</label>
+                            <span>{{data.routeSpeed}} m/s</span> <br/>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <table>
+                                <thead><tr>
+                                    <th>Odcinek</th>
+                                    <th>Przebyto</th>
+                                    <th>Czas</th>
+                                    <th>Prędkość</th>
+                                </tr></thead>
+                                <tbody>
+                                    <tr ng-repeat="section in data.sections">
+                                        <td>{{section.name}}</td>
+                                        <td>{{section.length}} m </td>
+                                        <td>{{section.time}}</td>
+                                        <td>{{section.speed}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

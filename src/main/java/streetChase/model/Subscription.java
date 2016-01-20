@@ -97,4 +97,16 @@ public class Subscription {
     public int hashCode() {
         return id;
     }
+
+    public String getGameName() {
+        if (streetGame == null)
+            return "";
+        return streetGame.getName();
+    }
+
+    public String getPlayerName() {
+        if (player == null)
+            return "";
+        return player.getName();
+    }
 }

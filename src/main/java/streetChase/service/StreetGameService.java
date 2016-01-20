@@ -5,21 +5,17 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import streetChase.dto.GamePlayerStatsDto;
+import streetChase.dto.RouteSectionDto;
 import streetChase.dto.StatsDto;
 import streetChase.dto.StreetGameDto;
-import streetChase.model.ControlPoint;
-import streetChase.model.StreetGame;
-import streetChase.model.User;
-import streetChase.model.UserLocation;
-import streetChase.repository.ControlPointRepository;
-import streetChase.repository.StreetGameRepository;
-import streetChase.repository.UserLocationRepository;
-import streetChase.repository.UserRepository;
+import streetChase.model.*;
+import streetChase.repository.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @Service
 public class StreetGameService {
@@ -34,7 +30,7 @@ public class StreetGameService {
     private UserRepository userRepository;
 
     @Resource
-    private UserLocationRepository userLocationRepository;
+    private SubscriptionRepository subscriptionRepository;
 
     @Transactional
     public List findAll() {
@@ -121,15 +117,43 @@ public class StreetGameService {
     }
 
     public GamePlayerStatsDto getGamePlayerStats(int gameId, int playerId) {
-        // nazwa gry, usera
-        // lista punktów
-        StreetGame game = streetGameRepository.findOne(gameId);
-        User player = userRepository.findOne(playerId);
+        Subscription subs = subscriptionRepository.findByUserAndGame(gameId, playerId);
         List<UserLocation> userLocationList = getUserLocations(gameId, playerId);
-        float routeLength = 0;
+        double routeLength = 0; // do policzenia z api
+        List<RouteSectionDto> sections = getRouteSectionsStats(gameId, playerId);
 
-        return new GamePlayerStatsDto(game, player, userLocationList, routeLength);
+
+        return new GamePlayerStatsDto(subs, userLocationList, routeLength, sections);
     }
+
+
+    private List<RouteSectionDto> getRouteSectionsStats(int gameId, int playerId) {
+        List<ControlPoint> controlPoints = getControlPoints(gameId);
+        if (controlPoints == null || controlPoints.size() < 2)
+            return Collections.emptyList();
+
+        ControlPoint begin = controlPoints.get(0);
+        ControlPoint end = null;
+        for (int i = 1; i < controlPoints.size(); ++i) {
+            end = controlPoints.get(i);
+            // wyliczyć długość przejechanej trasy między tymi pointsami 
+
+            begin = end;
+        }
+    }
+
+    private List<ControlPoint> getControlPoints(int gameId) {
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                "applicationContext.xml");
+
+        ControlPointRepository repository = context.getBean(ControlPointRepository.class);
+        List<ControlPoint> result =  repository.findByGameId(gameId);
+
+        context.close();
+
+        return result;
+    }
+
 
     private List<UserLocation> getUserLocations(int gameId, int playerId) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
