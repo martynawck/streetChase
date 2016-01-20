@@ -1,5 +1,6 @@
 package streetChase.controller;
 
+import org.apache.commons.logging.Log;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -57,6 +58,8 @@ public class MobileControlPointController {
         ControlPoint controlPoint = repository.findGameStartingPoint(gameId);//findOne(location_id);//repository.save(userLocation);
 
         context.close();
+
+        System.out.print(controlPoint.getId());
 
         GeometryUtil geometryUtil = new GeometryUtil();
         JSONObject jsonObject = new JSONObject();

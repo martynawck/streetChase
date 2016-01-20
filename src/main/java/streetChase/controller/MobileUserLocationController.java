@@ -9,6 +9,7 @@ import com.vividsolutions.jts.io.WKTWriter;
 import org.codehaus.jackson.map.util.JSONPObject;
 
 import org.json.simple.JSONObject;
+import org.postgresql.core.types.PGDouble;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,12 @@ import streetChase.model.UserLocation;
 import streetChase.repository.UserLocationRepository;
 import streetChase.service.UserLocationService;
 
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Date;
+import org.postgis.*;
 
 @Controller
 @RequestMapping(value = "/mobile")
@@ -88,6 +93,8 @@ public class MobileUserLocationController {
 
         return new ResponseEntity<JSONObject>(jsonObject, HttpStatus.CREATED);
     }
+
+
 
 
 }
