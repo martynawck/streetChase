@@ -154,11 +154,54 @@ public class StreetGameService {
         return new GamePlayerStatsDto(game, player, subs, userLocationList, routeLength, sections);
     }
 
+/*
+    private List<RouteSectionDto> getRouteSectionsStats(int gameId, int playerId) {
+        List<ControlPoint> controlPoints = getControlPoints(gameId);
+        if (controlPoints == null || controlPoints.size() < 2)
+            return Collections.emptyList();
+
+        List<RouteSectionDto> sections = new ArrayList<RouteSectionDto>();
+        ControlPoint begin = controlPoints.get(0);
+        UserReachedPoint beginReached = userReachedPointRepository.findByControlPointAndUser(playerId, begin.getId());
+        System.out.print ("CONTRL POINT ID " + beginReached.getId());
+        ControlPoint end = null;
+        UserReachedPoint endReached = null;
+        for (int i = 1; i < controlPoints.size(); ++i) {
+            end = controlPoints.get(i);
+            endReached = userReachedPointRepository.findByControlPointAndUser(playerId, end.getId());
+
+            System.out.print("CONTROL POINT ID" + endReached.getId());
+            // wyliczyć długość przejechanej trasy między tymi pointsami
+            double length = RouteUtils.getSectionLength(gameId, beginReached, endReached);
+            System.out.print("LENTGTH"+length);
+
+            // wyliczyć czas
+            long timeInSeconds = (endReached.getTimestamp().getTime() - beginReached.getTimestamp().getTime())/1000;
+
+            sections.add(new RouteSectionDto(begin.getName(), end.getName(), length, timeInSeconds));
+
+            begin = end;
+            beginReached = endReached;
+        }
+
+        return sections;
+    }*/
 
     private List<RouteSectionDto> getRouteSectionsStats(int gameId, int playerId) {
         List<ControlPoint> controlPoints = getControlPoints(gameId);
         if (controlPoints == null || controlPoints.size() < 2)
             return Collections.emptyList();
+
+        controlPoints.sort(new Comparator<ControlPoint>() {
+            @Override
+            public int compare(ControlPoint o1, ControlPoint o2) {
+                if (o1.getId() > o1.getId())
+                    return 1;
+                else if (o1.getId() == o2.getId())
+                    return 0;
+                return -1;
+            }
+        });
 
         List<RouteSectionDto> sections = new ArrayList<RouteSectionDto>();
         ControlPoint begin = controlPoints.get(0);
@@ -168,7 +211,6 @@ public class StreetGameService {
         for (int i = 1; i < controlPoints.size(); ++i) {
             end = controlPoints.get(i);
             endReached = userReachedPointRepository.findByControlPointAndUser(playerId, end.getId());
-
             // wyliczyć długość przejechanej trasy między tymi pointsami
             double length = RouteUtils.getSectionLength(gameId, beginReached, endReached);
 
@@ -183,6 +225,7 @@ public class StreetGameService {
 
         return sections;
     }
+
 
     private List<ControlPoint> getControlPoints(int gameId) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(

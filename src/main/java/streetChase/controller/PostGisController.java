@@ -10,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import streetChase.dto.GamePlayerStatsDto;
 import streetChase.model.UserLocation;
 import streetChase.model.UserReachedPoint;
 import streetChase.repository.UserLocationRepository;
+import streetChase.service.StreetGameService;
 import streetChase.service.UserReachedPointService;
 import streetChase.utils.GeometryUtil;
 import streetChase.utils.RouteUtils;
@@ -32,6 +34,9 @@ public class PostGisController {
 
     @Autowired
     UserReachedPointService userReachedPointService;
+
+    @Autowired
+    StreetGameService streetGameService;
 
     @RequestMapping(value = "/x/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<JSONObject> x(@PathVariable(value="id") int location_id) {
@@ -121,5 +126,4 @@ public class PostGisController {
         return geom;
 
     }
-
 }

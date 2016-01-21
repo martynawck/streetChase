@@ -23,6 +23,7 @@ public class RouteUtils {
 
         context.close();
 
+        System.out.print("here" + userLocations.size());
         return getRouteLengthFromLocations(userLocations);
     }
 
