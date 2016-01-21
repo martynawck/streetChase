@@ -12,6 +12,7 @@ function getInfowindowContent(address) {
 }
 
 function setMarker(position) {
+    removeTmpPoint(); 
     geocoder.geocode({'location': position}, function (results, status) {
         if (status === google.maps.GeocoderStatus.OK && results[0]) {
             tmpPoint = {'latLon': position, 'address': results[0].formatted_address};
