@@ -206,17 +206,13 @@ public class StreetGameService {
         List<RouteSectionDto> sections = new ArrayList<RouteSectionDto>();
         ControlPoint begin = controlPoints.get(0);
         UserReachedPoint beginReached = userReachedPointRepository.findByControlPointAndUser(playerId, begin.getId());
-        System.out.print ("CONTRL POINT ID " + beginReached.getId());
         ControlPoint end = null;
         UserReachedPoint endReached = null;
         for (int i = 1; i < controlPoints.size(); ++i) {
             end = controlPoints.get(i);
             endReached = userReachedPointRepository.findByControlPointAndUser(playerId, end.getId());
-
-            System.out.print("CONTROL POINT ID" + endReached.getId());
             // wyliczyć długość przejechanej trasy między tymi pointsami
             double length = RouteUtils.getSectionLength(gameId, beginReached, endReached);
-            System.out.print("LENTGTH"+length);
 
             // wyliczyć czas
             long timeInSeconds = (endReached.getTimestamp().getTime() - beginReached.getTimestamp().getTime())/1000;

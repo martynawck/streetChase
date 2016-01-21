@@ -126,11 +126,4 @@ public class PostGisController {
         return geom;
 
     }
-
-    @RequestMapping(method = RequestMethod.GET, value="/stats/{gameId}/{playerId}", produces = "application/json")
-    public ResponseEntity<?> getStatsPerGamePlayer(@PathVariable("gameId") int gameId, @PathVariable("playerId") int playerId) {
-        GamePlayerStatsDto dto = streetGameService.getGamePlayerStats(gameId, playerId);
-        return new ResponseEntity<GamePlayerStatsDto>(dto, HttpStatus.OK);
-    }
-
 }
