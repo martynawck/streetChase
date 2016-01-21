@@ -5,6 +5,7 @@ import streetChase.model.StreetGame;
 import streetChase.model.Subscription;
 import streetChase.model.User;
 import streetChase.model.UserLocation;
+import streetChase.utils.GeometryUtil;
 import streetChase.utils.TimeUtils;
 
 import java.util.ArrayList;
@@ -41,11 +42,11 @@ public class GamePlayerStatsDto {
                 this.route.add(new RoutePointDto(ul));
         }
 
-        this.routeLength = routeLength;
+        this.routeLength = Math.round(routeLength);
 
         if (subs != null && subs.getGame_finished() != null && subs.getGame_started() != null) {
             long routeTimeInSeconds = (subs.getGame_finished().getTime() - subs.getGame_started().getTime()) / 1000;
-            this.routeSpeed = routeLength / routeTimeInSeconds;
+            this.routeSpeed = GeometryUtil.round(routeLength / routeTimeInSeconds, 2);
             this.routeTime = TimeUtils.formatTimeInterval(routeTimeInSeconds);
         }
 

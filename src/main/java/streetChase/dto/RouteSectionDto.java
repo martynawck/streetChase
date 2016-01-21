@@ -1,5 +1,6 @@
 package streetChase.dto;
 
+import streetChase.utils.GeometryUtil;
 import streetChase.utils.TimeUtils;
 
 public class RouteSectionDto {
@@ -13,9 +14,9 @@ public class RouteSectionDto {
 
     public RouteSectionDto(String beginName, String endName, double length, long timeInSeconds) {
         this.name = beginName + " - " + endName;
-        this.length = length;
+        this.length = Math.round(length);
         this.time = TimeUtils.formatTimeInterval(timeInSeconds);
-        this.speed = length/timeInSeconds;
+        this.speed = GeometryUtil.round(length/timeInSeconds, 2);
     }
 
     public String getName() {

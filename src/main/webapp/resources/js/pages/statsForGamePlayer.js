@@ -43,18 +43,7 @@ App.controller("StatsForGamePlayerController", function($scope, $http){
         return $scope.activeTab == id;
     }
 
-    $scope.data = {
-        gameName: "gra",
-        playerName: "gracz",
-        routeLength: 123.5,
-        routeTime: "10h 3min",
-        route: [],
-        sections: [
-            {name: "nazwa", length: 12.3, time: "3h 2min", speed: 10},
-            {name: "nazwa", length: 12.3, time: "3h 2min", speed: 10},
-            {name: "nazwa", length: 12.3, time: "3h 2min", speed: 10}
-        ]
-    }
+    $scope.data = {}
 
     $scope.getRoute = function() {
         var url = window.location.pathname;

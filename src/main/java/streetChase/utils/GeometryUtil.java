@@ -6,6 +6,8 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 
 public class GeometryUtil {
@@ -46,5 +48,11 @@ public class GeometryUtil {
         WKTWriter toText = new WKTWriter();
         String geom = toText.write(wktPoint);
         return geom;
+    }
+
+    public static double round(double value, int places) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
